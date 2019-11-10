@@ -9,6 +9,7 @@ var firstname = "";
 var lastname = "";
 var email = "";
 var id = "";
+var arr = ["happy", "sad", "angry"];
 
 
 app.set('port', process.env.PORT || 3004); //on port 3004
@@ -25,13 +26,51 @@ app.get('/signup', function(req, res) { // get request for signup page
 app.get('/customize', function(req, res) { //get request for customize page
     res.sendFile(__dirname + "/customize.html");
 });
-var arr = ["happy", "sad", "angry"]
-app.get('/mood', function(req, res) {
 
-    res.send(arr[Math.floor(Math.random() * 3)]) //get request for customize page
+app.get('/mood', function(req, res) {
+    var nano = require('nano')('http://localhost:5984');
+    var test_db = nano.db.use('moods');
+    var mood = arr[Math.floor(Math.random() * 3)];
+    // inserting document
+    var userdata = {
+        "user": username,
+        "mood": mood
+
+
+    };
+
+    var data = JSON.stringify({
+        user: username,
+        mood: mood
+    });
+
+    test_db.update =
+        function(obj, key, callback) {
+            var db = this;
+            db.get(key, function(error, existing) {
+                if (!error) {
+                    obj._rev = existing._rev;
+                    db.insert(obj, key, callback);
+                } else {
+                    db.insert(obj, callback);
+                }
+            });
+        }
+    test_db.update(userdata, id, function(err, res) {
+        if (!err) {
+            console.log(res);
+
+        } else {
+            console.log(err);
+
+        }
+    })
+
+    res.end(data);
+
 
 });
-app.post('/result', urlencodedParser, function(req, res) {
+app.post('/signup', urlencodedParser, function(req, res) {
 
     var nano = require('nano')('http://localhost:5984');
     var test_db = nano.db.use('accounts');
@@ -91,7 +130,51 @@ app.post('/addpreferences', urlencodedParser, function(req, res) {
     res.send(true);
 
 })
+app.get('/addsensors', urlencodedParser, function(req, res) {
 
+    var nano = require('nano')('http://localhost:5984');
+    var test_db = nano.db.use('sensors');
+    var hrm = Math.floor(Math.random() * (140 - 50) + 50);
+    var light = Math.floor(Math.random() * 499);
+    // inserting document
+    var userdata = {
+        "user": username,
+        "HRM": hrm,
+        "light": light
+
+    };
+
+    var data = JSON.stringify({
+        user: username,
+        HRM: hrm,
+        light: light
+    });
+
+    test_db.update =
+        function(obj, key, callback) {
+            var db = this;
+            db.get(key, function(error, existing) {
+                if (!error) {
+                    obj._rev = existing._rev;
+                    db.insert(obj, key, callback);
+                } else {
+                    db.insert(obj, callback);
+                }
+            });
+        }
+    test_db.update(userdata, id, function(err, res) {
+        if (!err) {
+            console.log(res);
+
+        } else {
+            console.log(err);
+
+        }
+    })
+
+    res.end(data);
+
+})
 app.post('/logincheck', urlencodedParser, function(req, res) {
 
     var nano = require('nano')('http://localhost:5984');
