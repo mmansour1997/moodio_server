@@ -1,0 +1,177 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit; }
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; }
+
+body {
+  font-family: "Nunito", sans-serif;
+  font-weight: 300;
+  line-height: 1.6; }
+
+.container {
+  display: grid;
+  grid-template-rows: auto repeat(4, min-content);
+  position: relative; 
+  background-color: dimgrey;}
+
+
+.navigation {
+  background-image: linear-gradient(to left, rgb(68, 131, 224) ,black );
+  position: fixed;
+  /* Set the navbar to fixed position */
+  top: 0;
+  /* Position the navbar at the top of the page */
+  width: 100%;
+  /* Full width */
+  display: grid;
+  grid-template-columns: max-content max-content;
+  padding: 2.7rem 0;
+  justify-content: space-around; 
+  text-shadow:  1px 1px #000;}
+  .navigation .menu {
+    align-self: center;
+    margin-left: 9rem; }
+  .navigation a, .navigation a:link, .navigation a:visited {
+    color: white;
+    text-decoration: none;
+    padding: 1.5rem;
+    font-size: 1.2rem; }
+  .navigation a:hover {
+    color: #ff9700; }
+
+.logo {
+  background-color: transparent;
+  display: grid;
+  grid-template-columns: min-content min-content; }
+  .logo__icon {
+    display: inline;
+    height: 5rem;
+    width: 10.5rem; }
+  .logo__text {
+    display: inline;
+    color: white;
+    font-weight: bold;
+    align-self: center;
+    font-size: 2.4rem; 
+    text-shadow:  1px 1px #000;
+    letter-spacing: 1.5px;
+}
+
+.bg-video {
+  position: absolute;
+  top: 9rem;
+  left: 0;
+  height: 80vh;
+  width: 100%;
+  z-index: -1;
+  opacity: .6;
+  overflow: hidden; }
+.bg-video__content {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; }
+
+
+/*----------------------*/
+
+#box{
+    background:rgb(255, 255, 255, .2);
+    /* height: 200px; */
+    /* width: 200px; */
+    height: 100%;
+    width: 100vw;
+    padding: 2rem;
+    padding: 50px;
+    box-sizing: border-box;
+    color: white;
+    
+    text-align: center;
+    transform: translateY(13rem);
+    
+}
+
+#logintitle{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 7rem;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+    /* color: #888; */
+}
+
+#box p{
+    font-size: 1.9rem;
+}
+
+.form-wrapper {
+    background: (256, 256, 256, 0.5);
+    margin: 3em auto;
+    padding: 0 1rem;
+    display: block;
+    font-size: 1.5rem;
+  
+  }
+input{
+    border-radius: 3.5px;
+    border: none;
+    margin-bottom: 3px;
+    margin-left: 5px;
+    padding: .4rem;
+    
+}
+.button {
+    display: inline-block;
+    background:rgba(131, 128, 126, 0.9);
+    color: white;
+    border: solid 1px grey;
+    padding: .5rem;
+    margin:auto;
+    background: linear-gradient(rgba(131, 128, 126, 0.9), rgba(66, 65, 64, 0.9));
+    text-decoration: none;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    border-radius: 5px;
+}
+
+
+.button:hover{
+    display: inline-block;
+    border-color: #888;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+    background:rgba(131, 128, 126, 0.9);
+    background: linear-gradient(to top, rgba(190, 187, 185, 0.9),rgba(131, 128, 126, 0.9));
+    animation-name: buttonAnimation;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+}
+.button:active{
+    position: relative;
+    top:1px;
+}
+/* */
+#loginsignup{
+    transform: translateY(-2rem);
+    font-size: 1.5rem;
+ }
+#loginsignup a{
+    display: block;
+    text-decoration: none;
+    color: white;
+    
+}
+
+/*----------------------*/
+
+footer{
+  background-image: linear-gradient(to left, rgb(68, 131, 224) ,black );
+    height:auto;
+    padding: 2rem;
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}

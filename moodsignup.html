@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,400i|Nunito:300,300i" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="moodsignup.css">
+    <link rel="shortcut icon" type="image/png" href="img/apple-touch-icon-60x60.png">
+    <title>Mood.io</title>
+</head>
+
+<body class="container">
+    <div class="navigation">
+        <div class="logo">
+            <a href="http://localhost:3004/"><span class ="logo__text">Mood.io</span></a>
+        </div>
+
+        <div class="menu">
+            <a href="http://localhost:3004/">Login</a>
+        </div>
+    </div>
+
+    <div class="bg-video">
+        <video class="bg-video__content" autoplay muted loop>
+                <source src="Blue-Mood.webm" type="video/webm">
+                        Your browser is not supported!
+            </video>
+    </div>
+
+    <div id="box">
+        <div id="logintitle">Mood.io</div>
+        <p>
+            A Home for your State of Mind
+            <p>
+                <form action="/result" align="center" method="POST">
+                    <!-- sign up form asks for email address, full name, username, and password -->
+                    <div class="form-wrapper">
+                        Email Address:<input type="text" placeholder="Enter Email Address" name="email">
+                        <!--placeholder is what is shown form by  default-->
+                        <br> First name:<input type="text" placeholder="Enter First name" name="firstname">
+                        <!--placeholder is what is shown form by  default-->
+                        <br> Last name:<input type="text" placeholder="Enter Last name" name="lastname">
+                        <!--placeholder is what is shown form by  default-->
+                        <br> Username:
+                        <input type="text" placeholder="Enter Username" name="username">
+                        <!--placeholder is what is shown form by default-->
+                        <br> Password:
+                        <input type="password" placeholder="Enter Password" name="password">
+                        <br>
+                        <!-- sign up button takes you to about page-->
+                        <button input type="submit" class="button" value="Submit" id="signupbutton">Sign up 
+                                </button>
+                        <!--2 same buttons-->
+                    </div>
+                </form>
+                <div id="loginsignup">Already have an account?<a href="http://localhost:3004/">Click here to sign in</a></div>
+
+    </div>
+    <footer>
+        <small>&copy; Copyright 2019, Mood.io</small>
+    </footer>
+</body>
+
+</html>

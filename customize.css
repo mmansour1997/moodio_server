@@ -1,0 +1,238 @@
+/* standardized formats*/
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    /* So The font is easily changed relatively using rems*/
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Nunito", sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+
+/* divide website into three main rows*/
+
+.container {
+    display: grid;
+    grid-template-rows: auto repeat(4, min-content);
+    /*  grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 10rem) [col-end]) [center-end] 1fr [full-end];*/
+    position: relative;
+    background-image: linear-gradient(to left, lightgreen, yellow);
+}
+
+
+/* the navigation bar*/
+
+.navigation {
+    background-image: linear-gradient(to left, rgb(68, 131, 224), black);
+    position: fixed;
+    /* Set the navbar to fixed position */
+    top: 0;
+    /* Position the navbar at the top of the page */
+    width: 100%;
+    /* Full width */
+    display: grid;
+    /* 2 columns for the logo and menu */
+    grid-template-columns: max-content max-content;
+    padding: 2.7rem 0;
+    justify-content: space-around;
+    text-shadow: 1px 1px #000;
+}
+
+
+/* formatting the menu and interaction*/
+
+.navigation .menu {
+    align-self: center;
+    margin-left: 9rem;
+}
+
+.navigation a,
+.navigation a:link,
+.navigation a:visited {
+    color: white;
+    text-decoration: none;
+    padding: 1.5rem;
+    font-size: 1.2rem;
+}
+
+.navigation a:hover {
+    color: #ff9700;
+}
+
+
+/* formatting the logo into 2 columns (logo+ title)*/
+
+
+/* logo icon to be implmented in the future*/
+
+.logo {
+    background-color: transparent;
+    display: grid;
+    grid-template-columns: min-content min-content;
+}
+
+.logo__icon {
+    display: inline;
+}
+
+.logo__text {
+    display: inline;
+    color: white;
+    font-weight: bold;
+    align-self: center;
+    font-size: 2.4rem;
+    text-shadow: 1px 1px #000;
+    letter-spacing: 1.5px;
+}
+
+
+/* formatting the background video container behind everything else*/
+
+.bg-video {
+    position: absolute;
+    top: 9rem;
+    left: 0;
+    height: 80vh;
+    width: 100%;
+    z-index: -1;
+    opacity: .6;
+    overflow: hidden;
+}
+
+
+/* formatting the video itself*/
+
+
+/*----------------------*/
+
+
+/* formatting the main section of the landing page */
+
+#box {
+    background: rgb(255, 255, 255, .2);
+    /* height: 200px; */
+    /* width: 200px; */
+    height: 100%;
+    width: 100vw;
+    padding: 2rem;
+    padding: 50px;
+    box-sizing: border-box;
+    color: black;
+    text-align: left;
+    transform: translateY(13rem);
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-gap: 4rem;
+}
+
+.welcomeC {
+    display: grid;
+    grid-template-rows: auto auto;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+#selgenre {
+    text-align: center;
+    font-size: 3rem;
+}
+
+.chooseC {
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+.genre {
+    display: grid;
+    grid-template-rows: auto auto;
+    transition: transform .2s;
+}
+
+.genre:hover {
+    transform: scale(1.2);
+}
+
+.genre label {
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.selCus {
+    justify-self: center;
+}
+
+.selCus select {
+    background-color: #0563af;
+    color: black;
+    padding: 12px;
+    width: 250px;
+    border: none;
+    font-size: 20px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    -webkit-appearance: button;
+    appearance: button;
+    outline: none;
+}
+
+.selCus::before {
+    content: "\f13a";
+    font-family: FontAwesome;
+    transform: translateX(2rem);
+    width: 20%;
+    /* height: 100%; */
+    text-align: center;
+    font-size: 28px;
+    line-height: 45px;
+    color: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+}
+
+.selCus:hover::before {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.selCus select option {
+    padding: 30px;
+}
+
+.genre #happy select {
+    background-color: #ff9700
+}
+
+.genre #sad select {
+    background-color: #0563af
+}
+
+.genre #angry select {
+    background-color: orangered;
+}
+
+
+/*----------------------*/
+
+
+/* formatting the footer */
+
+footer {
+    background-image: linear-gradient(to left, rgb(68, 131, 224), black);
+    height: auto;
+    padding: 2rem;
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}

@@ -1,0 +1,508 @@
+/* basic emoji setup */
+
+.emoji {
+    width: 120px;
+    height: 120px;
+    margin: 15px 15px 40px;
+    background: #FFDA6A;
+    display: inline-block;
+    border-radius: 50%;
+    position: relative;
+    align-self: center;
+    justify-self: center;
+    transition: transform 0.2s;
+}
+
+.emoji:hover {
+    transform: scale(1.1);
+}
+
+.emoji:after {
+    position: absolute;
+    bottom: -40px;
+    font-size: 18px;
+    width: 60px;
+    left: calc(50% - 30px);
+    color: #8A8A8A;
+}
+
+.emoji__face,
+.emoji__eyebrows,
+.emoji__eyes,
+.emoji__mouth,
+.emoji__tongue,
+.emoji__heart,
+.emoji__hand,
+.emoji__thumb {
+    position: absolute;
+}
+
+.emoji__face:before,
+.emoji__face:after,
+.emoji__eyebrows:before,
+.emoji__eyebrows:after,
+.emoji__eyes:before,
+.emoji__eyes:after,
+.emoji__mouth:before,
+.emoji__mouth:after,
+.emoji__tongue:before,
+.emoji__tongue:after,
+.emoji__heart:before,
+.emoji__heart:after,
+.emoji__hand:before,
+.emoji__hand:after,
+.emoji__thumb:before,
+.emoji__thumb:after {
+    position: absolute;
+    content: '';
+}
+
+.emoji__face {
+    width: inherit;
+    height: inherit;
+}
+
+
+/* happy */
+
+.emoji--yay:after {
+    content: 'Yay';
+    -webkit-animation: yay-reverse 1s linear infinite;
+    animation: yay-reverse 1s linear infinite;
+}
+
+.emoji--yay .emoji__face {
+    -webkit-animation: yay 1s linear infinite alternate;
+    animation: yay 1s linear infinite alternate;
+}
+
+.emoji--yay .emoji__eyebrows {
+    left: calc(50% - 3px);
+    top: 30px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: -6px 0 0 0 #000000, -36px 0 0 0px #000000, 6px 0 0 0 #000000, 36px 0 0 0px #000000;
+}
+
+.emoji--yay .emoji__eyebrows:before,
+.emoji--yay .emoji__eyebrows:after {
+    width: 36px;
+    height: 18px;
+    border-radius: 60px 60px 0 0;
+    background: transparent;
+    border: 6px solid black;
+    box-sizing: border-box;
+    border-bottom: 0;
+    bottom: 3px;
+    left: calc(50% - 18px);
+}
+
+.emoji--yay .emoji__eyebrows:before {
+    margin-left: -21px;
+}
+
+.emoji--yay .emoji__eyebrows:after {
+    margin-left: 21px;
+}
+
+.emoji--yay .emoji__mouth {
+    top: 60px;
+    background: transparent;
+    left: 50%;
+}
+
+.emoji--yay .emoji__mouth:after {
+    width: 80px;
+    height: 80px;
+    left: calc(50% - 40px);
+    top: -75px;
+    border-radius: 50%;
+    background: transparent;
+    border: 6px solid #000000;
+    box-sizing: border-box;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    z-index: 1;
+}
+
+.emoji--yay .emoji__mouth:before {
+    width: 6px;
+    height: 6px;
+    background: transparent;
+    border-radius: 50%;
+    bottom: 5px;
+    left: calc(50% - 3px);
+    box-shadow: -25px 0 0 0 #000000, 25px 0 0 0 #000000, -35px -2px 30px 10px #D5234C, 35px -2px 30px 10px #D5234C;
+}
+
+@-webkit-keyframes yay {
+    25% {
+        -webkit-transform: rotate(-15deg);
+        transform: rotate(-15deg);
+    }
+    75% {
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+}
+
+@keyframes yay {
+    25% {
+        -webkit-transform: rotate(-15deg);
+        transform: rotate(-15deg);
+    }
+    75% {
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+}
+
+
+/* angry */
+
+.emoji--angry {
+    background: linear-gradient(#D5234C -10%, #FFDA6A);
+    background-size: 100%;
+    -webkit-animation: angry-color 2s ease-in infinite;
+    animation: angry-color 2s ease-in infinite;
+}
+
+.emoji--angry:after {
+    content: 'Angry';
+}
+
+.emoji--angry .emoji__face {
+    -webkit-animation: angry-face 2s ease-in infinite;
+    animation: angry-face 2s ease-in infinite;
+}
+
+.emoji--angry .emoji__eyebrows {
+    left: calc(50% - 3px);
+    top: 55px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: -44px 5px 0 0 #000000, -7px 16px 0 0 #000000, 7px 16px 0 0 #000000, 44px 5px 0 0 #000000;
+}
+
+.emoji--angry .emoji__eyebrows:before,
+.emoji--angry .emoji__eyebrows:after {
+    width: 50px;
+    height: 20px;
+    border: 6px solid #000000;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    top: 0;
+    left: calc(50% - 25px);
+}
+
+.emoji--angry .emoji__eyebrows:before {
+    margin-left: -25px;
+    -webkit-transform: rotate(15deg);
+    transform: rotate(15deg);
+}
+
+.emoji--angry .emoji__eyebrows:after {
+    margin-left: 25px;
+    -webkit-transform: rotate(-15deg);
+    transform: rotate(-15deg);
+}
+
+.emoji--angry .emoji__eyes {
+    width: 12px;
+    height: 12px;
+    left: calc(50% - 6px);
+    top: 70px;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: 25px 0 0 0 #000000, -25px 0 0 0 #000000;
+}
+
+.emoji--angry .emoji__mouth {
+    width: 36px;
+    height: 18px;
+    left: calc(50% - 18px);
+    bottom: 15px;
+    background: #000000;
+    border-radius: 50%;
+    -webkit-animation: angry-mouth 2s ease-in infinite;
+    animation: angry-mouth 2s ease-in infinite;
+}
+
+@keyframes angry-color {
+    45%,
+    60% {
+        background-size: 250%;
+    }
+    85%,
+    100%,
+    0% {
+        background-size: 100%;
+    }
+}
+
+@-webkit-keyframes angry-face {
+    35%,
+    60% {
+        -webkit-transform: translateX(0) translateY(10px) scale(0.9);
+        transform: translateX(0) translateY(10px) scale(0.9);
+    }
+    40%,
+    50% {
+        -webkit-transform: translateX(-5px) translateY(10px) scale(0.9);
+        transform: translateX(-5px) translateY(10px) scale(0.9);
+    }
+    45%,
+    55% {
+        -webkit-transform: translateX(5px) translateY(10px) scale(0.9);
+        transform: translateX(5px) translateY(10px) scale(0.9);
+    }
+}
+
+@keyframes angry-face {
+    35%,
+    60% {
+        -webkit-transform: translateX(0) translateY(10px) scale(0.9);
+        transform: translateX(0) translateY(10px) scale(0.9);
+    }
+    40%,
+    50% {
+        -webkit-transform: translateX(-5px) translateY(10px) scale(0.9);
+        transform: translateX(-5px) translateY(10px) scale(0.9);
+    }
+    45%,
+    55% {
+        -webkit-transform: translateX(5px) translateY(10px) scale(0.9);
+        transform: translateX(5px) translateY(10px) scale(0.9);
+    }
+}
+
+@-webkit-keyframes angry-mouth {
+    25%,
+    50% {
+        height: 6px;
+        bottom: 25px;
+    }
+}
+
+@keyframes angry-mouth {
+    25%,
+    50% {
+        height: 6px;
+        bottom: 25px;
+    }
+}
+
+
+/* sad */
+
+.emoji--sad .emoji__eyebrows:after {
+    margin-left: 30px;
+    -webkit-transform: rotate(30deg);
+    transform: rotate(30deg);
+}
+
+.emoji--sad .emoji__eyes {
+    width: 14px;
+    height: 16px;
+    left: calc(50% - 7px);
+    top: 50px;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: 25px 0 0 0 #000000, -25px 0 0 0 #000000;
+}
+
+.emoji--sad .emoji__eyes:after {
+    background: #548DFF;
+    width: 12px;
+    height: 12px;
+    margin-left: 6px;
+    border-radius: 0 100% 40% 50% / 0 50% 40% 100%;
+    -webkit-transform-origin: 0% 0%;
+    transform-origin: 0% 0%;
+    -webkit-animation: tear-drop 2s ease-in infinite;
+    animation: tear-drop 2s ease-in infinite;
+}
+
+.emoji--sad .emoji__mouth {
+    width: 60px;
+    height: 80px;
+    left: calc(50% - 30px);
+    top: 80px;
+    box-sizing: border-box;
+    border: 6px solid #000000;
+    border-radius: 50%;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    background: transparent;
+    -webkit-animation: sad-mouth 2s ease-in infinite;
+    animation: sad-mouth 2s ease-in infinite;
+}
+
+.emoji--sad .emoji__mouth:after {
+    width: 6px;
+    height: 6px;
+    background: transparent;
+    border-radius: 50%;
+    top: 4px;
+    left: calc(50% - 3px);
+    box-shadow: -18px 0 0 0 #000000, 18px 0 0 0 #000000;
+}
+
+@-webkit-keyframes sad-face {
+    25%,
+    35% {
+        top: -15px;
+    }
+    55%,
+    95% {
+        top: 10px;
+    }
+    100%,
+    0% {
+        top: 0;
+    }
+}
+
+@keyframes sad-face {
+    25%,
+    35% {
+        top: -15px;
+    }
+    55%,
+    95% {
+        top: 10px;
+    }
+    100%,
+    0% {
+        top: 0;
+    }
+}
+
+@-webkit-keyframes sad-mouth {
+    25%,
+    35% {
+        -webkit-transform: scale(0.85);
+        transform: scale(0.85);
+        top: 70px;
+    }
+    55%,
+    100%,
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        top: 80px;
+    }
+}
+
+@keyframes sad-mouth {
+    25%,
+    35% {
+        -webkit-transform: scale(0.85);
+        transform: scale(0.85);
+        top: 70px;
+    }
+    55%,
+    100%,
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        top: 80px;
+    }
+}
+
+@-webkit-keyframes tear-drop {
+    0%,
+    100% {
+        display: block;
+        left: 35px;
+        top: 15px;
+        -webkit-transform: rotate(45deg) scale(0);
+        transform: rotate(45deg) scale(0);
+    }
+    25% {
+        display: block;
+        left: 35px;
+        -webkit-transform: rotate(45deg) scale(2);
+        transform: rotate(45deg) scale(2);
+    }
+    49.9% {
+        display: block;
+        left: 35px;
+        top: 65px;
+        -webkit-transform: rotate(45deg) scale(0);
+        transform: rotate(45deg) scale(0);
+    }
+    50% {
+        display: block;
+        left: -35px;
+        top: 15px;
+        -webkit-transform: rotate(45deg) scale(0);
+        transform: rotate(45deg) scale(0);
+    }
+    75% {
+        display: block;
+        left: -35px;
+        -webkit-transform: rotate(45deg) scale(2);
+        transform: rotate(45deg) scale(2);
+    }
+    99.9% {
+        display: block;
+        left: -35px;
+        top: 65px;
+        -webkit-transform: rotate(45deg) scale(0);
+        transform: rotate(45deg) scale(0);
+    }
+}
+
+@keyframes tear-drop {
+    0%,
+    100% {
+        display: block;
+        left: 35px;
+        top: 15px;
+        -webkit-transform: rotate(45deg) scale(0);
+        transform: rotate(45deg) scale(0);
+    }
+    25% {
+        display: block;
+        left: 35px;
+        -webkit-transform: rotate(45deg) scale(2);
+        transform: rotate(45deg) scale(2);
+    }
+    49.9% {
+        display: block;
+        left: 35px;
+        top: 65px;
+        -webkit-transform: rotate(45deg) scale(0);
+        transform: rotate(45deg) scale(0);
+    }
+    50% {
+        display: block;
+        left: -35px;
+        top: 15px;
+        -webkit-transform: rotate(45deg) scale(0);
+        transform: rotate(45deg) scale(0);
+    }
+    75% {
+        display: block;
+        left: -35px;
+        -webkit-transform: rotate(45deg) scale(2);
+        transform: rotate(45deg) scale(2);
+    }
+    99.9% {
+        display: block;
+        left: -35px;
+        top: 65px;
+        -webkit-transform: rotate(45deg) scale(0);
+        transform: rotate(45deg) scale(0);
+    }
+}

@@ -1,0 +1,100 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400);
+.player {
+    background: white;
+    width: 40rem;
+    height: 15rem;
+    align-self: end;
+    border-radius: 9px;
+    /* margin: -3rem 0 0 -10rem;
+  top: 50%;
+  left: 50%; */
+    box-shadow: 0px 31px 35px -26px #080c21;
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+
+.progress {
+    height: 0.5rem;
+    width: 100%;
+    background-color: #c0c0c0;
+}
+
+.progress .bar {
+    height: 100%;
+    background-image: linear-gradient(rgb(68, 131, 224), black);
+}
+
+.current-track figure.albumn-cover {
+    float: left;
+    width: 5.5rem;
+    height: 5.5rem;
+}
+
+.current-track figure.albumn-cover img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.track-name {
+    margin-left: 6rem;
+    padding: 0.75rem;
+}
+
+.track-name a {
+    color: #333;
+    text-decoration: none;
+}
+
+.track-name a:hover {
+    text-decoration: underline;
+}
+
+.track-name h1 {
+    font-size: 1.25em;
+}
+
+.track-name h2 {
+    font-size: 0.75em;
+    font-weight: 300;
+    color: #c0c0c0;
+}
+
+.track-name h2 a {
+    color: #c0c0c0;
+}
+
+.track-name h2 a:hover {
+    color: rgb(68, 131, 224);
+    ;
+}
+
+.controls {
+    margin-left: 5.5rem;
+    color: #c0c0c0;
+}
+
+.controls ul {
+    margin: 0;
+    padding: 0;
+}
+
+.controls ul li {
+    display: block;
+    list-style: none;
+    width: 16.6666%;
+    float: left;
+    text-align: center;
+    position: relative;
+    height: 2rem;
+    line-height: 2rem;
+}
+
+.controls ul li.active,
+.controls ul li:hover {
+    color: rgb(68, 131, 224);
+    ;
+}
+
+.controls ul li:hover {
+    background-color: #f3f3f3;
+}

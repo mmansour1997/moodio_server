@@ -1,0 +1,345 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Nunito", sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+}
+
+.container {
+    display: grid;
+    grid-template-rows: auto repeat(4, min-content);
+    position: relative;
+    /* background-image: linear-gradient(to left, grey ,black );} */
+    background-color: white;
+}
+
+.navigation {
+    background-image: linear-gradient(to left, rgb(68, 131, 224), black);
+    position: fixed;
+    /* Set the navbar to fixed position */
+    top: 0;
+    /* Position the navbar at the top of the page */
+    width: 100%;
+    /* Full width */
+    z-index: 11;
+    display: grid;
+    grid-template-columns: max-content max-content;
+    padding: 2.7rem 0;
+    justify-content: space-around;
+    text-shadow: 1px 1px #000;
+}
+
+.navigation .menu {
+    align-self: center;
+    margin-left: 9rem;
+}
+
+.navigation a,
+.navigation a:link,
+.navigation a:visited {
+    color: white;
+    text-decoration: none;
+    padding: 1.5rem;
+    font-size: 1.2rem;
+}
+
+.navigation a:hover {
+    color: #ff9700;
+}
+
+.logo {
+    background-color: transparent;
+    display: grid;
+    grid-template-columns: min-content min-content;
+}
+
+.logo__icon {
+    display: inline;
+    height: 5rem;
+    width: 10.5rem;
+}
+
+.logo__text {
+    display: inline;
+    color: white;
+    font-weight: bold;
+    align-self: center;
+    font-size: 2.4rem;
+    text-shadow: 1px 1px #000;
+    letter-spacing: 1.5px;
+}
+
+.bg-video {
+    position: absolute;
+    top: 9rem;
+    left: 0;
+    height: 80vh;
+    width: 100%;
+    opacity: .6;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto;
+}
+
+.main {}
+
+.circle-container {
+    position: relative;
+    height: 70vh;
+    width: 100vw;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-rows: auto;
+    transform: translateY(-6rem);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.circlebig {
+    position: absolute;
+    display: flex;
+    width: 28em;
+    height: 28em;
+    padding: 2.8em;
+    /*= 2em * 1.4 (2em = half the width of an img, 1.4 = sqrt(2))*/
+    border-radius: 50%;
+    margin: 1.75em auto 0;
+    align-self: center;
+    justify-self: center;
+    bottom: 28.4rem;
+    z-index: 9;
+    background-color: white;
+    left: 37vw;
+    top: 10vh;
+}
+
+.circlesmall {
+    position: absolute;
+    display: flex;
+    width: 24em;
+    height: 24em;
+    padding: 2.8em;
+    border-radius: 50%;
+    margin: 1.75em auto 0;
+    border: 5px dashed black;
+    -webkit-transition: border 500ms ease-out;
+    -moz-transition: border 500ms ease-out;
+    -o-transition: border 500ms ease-out;
+    /* align-self: center;
+  justify-self: center; */
+    bottom: 28.4rem;
+    z-index: 10;
+    background-color: rgb(68, 131, 224, .5);
+    left: 39vw;
+    top: 13vh;
+    display: grid;
+    grid-template-rows: auto auto;
+}
+
+.circlesmall:hover {
+    border: 10px dashed darkblue;
+}
+
+.circlesmall span {
+    margin-top: -3rem;
+    font-size: 3rem;
+    -webkit-transition: color 500ms ease-out;
+    -moz-transition: color 500ms ease-out;
+    -o-transition: color 500ms ease-out;
+}
+
+.circlesmall:hover span {
+    color: darkblue;
+}
+
+
+/*----------------------*/
+
+#box {
+    /* background:rgb(255, 255, 255, .2); */
+    height: 70vh;
+    width: 100vw;
+    box-sizing: border-box;
+    color: white;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2rem;
+    text-align: center;
+    align-self: center;
+    transform: translateY(12.4rem);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.parameter {
+    background-color: rgb(68, 131, 224, .5);
+    width: auto;
+    font-size: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.top {
+    align-self: start;
+}
+
+
+/*----------------------*/
+
+footer {
+    background-image: linear-gradient(to left, rgb(68, 131, 224), black);
+    height: auto;
+    padding: 2rem;
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
+
+
+/*----------------------*/
+
+div.widget {
+    position: relative;
+    width: 40rem;
+    height: 18rem;
+    background-color: #fcfdfd;
+    border-radius: 9px;
+    padding: 25px;
+    padding-right: 30px;
+    box-shadow: 0px 31px 35px -26px #080c21;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+#date {
+    font-size: 14px;
+    height: 2rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+div.city {
+    font-size: 21px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-top: 5px;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+div.temp {
+    font-size: 4rem;
+    color: rgba(0, 0, 0, 0.9);
+    font-weight: 100;
+}
+
+div.panel {
+    display: inline-block;
+}
+
+div.left-panel {
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+
+div.right-panel {
+    height: 20%;
+    width: 20%;
+    padding-left: 10px;
+}
+
+
+/*-----------------------Music-----------------------*/
+
+#Music {
+    display: grid;
+    grid-template-rows: auto;
+}
+
+#Message {
+    display: grid;
+    grid-template-rows: auto;
+}
+
+.sheet {
+    background: white;
+    width: 40rem;
+    height: 15rem;
+    color: black;
+    align-self: end;
+    justify-self: right;
+    display: grid;
+    grid-template-rows: auto auto;
+    border-radius: 9px;
+    box-shadow: 0px 31px 35px -26px #080c21;
+}
+
+#Light {
+    display: grid;
+    grid-template-rows: auto;
+}
+
+#Light .sheet {
+    background: white;
+    width: 40rem;
+    height: 18rem;
+    color: black;
+    align-self: start;
+    justify-self: right;
+    display: grid;
+    grid-template-rows: auto auto;
+    border-radius: 9px;
+    box-shadow: 0px 31px 35px -26px #080c21;
+}
+
+button {
+    height: 4rem;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    background-color: rgb(68, 131, 224);
+    font-family: 'Arial', serif;
+    margin: 20px auto;
+    color: white;
+    font-size: 2rem;
+    border-radius: 9px;
+}
+
+.quotes {
+    border-radius: 9px;
+    height: 4rem;
+    width: auto;
+    font-size: 1.5rem;
+    font-family: 'Cardo', serif;
+    color: #000;
+    text-align: center;
+}
+
+.test {
+    color: #000;
+}
+
+footer button{
+    
+    padding-right: 1rem;
+    padding-left: 1rem;
+    background-color: rgb(68, 131, 224);
+    font-family: 'Arial', serif;
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    border-radius: 9px;
+}

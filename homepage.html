@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,400i|Nunito:300,300i" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="bulb.css">
+    <link rel="stylesheet" href="emojis.css">
+    <link rel="stylesheet" href="music.css">
+    <link rel="shortcut icon" type="image/png" href="img/apple-touch-icon-60x60.png">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+    <script src="bulb.js"></script>
+    <script type="text/javascript" src="messages.js"></script>
+    <title>Mood.io</title>
+
+
+
+</head>
+
+<body class="container">
+
+    <!-- the navigation bar -->
+    <div class="navigation">
+
+        <!-- The logo for now only has the title, the logo itself to be implemented in the future -->
+        <div class="logo">
+            <a href="http://localhost:3004/">
+                <span class="logo__text">Mood.io</span>
+            </a>
+        </div>
+
+        <!-- the navigation bar options menu-->
+        <div class="menu">
+            <button id="btn1" type="button">Happy</button>
+            <script>
+                document.getElementById('btn1').onclick = function() {
+                    document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--yay"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__mouth"></div></div></div>';
+                }
+            </script>
+            <button id="btn2" type="button">Angry</button>
+
+            <script>
+                document.getElementById('btn2').onclick = function() {
+                    document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--angry"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div>';
+                }
+            </script>
+            <button id="btn3" type="button">Sad</button>
+            <script>
+                document.getElementById('btn3').onclick = function() {
+                    document.getElementsByClassName('circlesmall')[0].innerHTML = ' <div class="emoji  emoji--sad"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div><span>Sad</span>';
+                }
+            </script>
+
+            <a href="http://localhost:3004/customize">Customize</a>
+            <a href="http://localhost:3004/">Logout</a>
+
+        </div>
+    </div>
+
+    <!-- The background image left for any background change -->
+    <div class="bg-video">
+    </div>
+
+    <!-- The main component of the landing page-->
+    <section class="main">
+        <script>
+            $(document).ready(function() {
+                setInterval(() => {
+
+                    $.ajax({
+                        type: 'GET',
+                        cache: false,
+                        url: "/mood",
+                        success: function(data) {
+                            if (data == "happy") {
+
+                                document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--yay"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__mouth"></div></div></div>';
+                            } else if (data == "sad") {
+                                document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--angry"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div>';
+                            } else if (data == "angry") {
+                                document.getElementsByClassName('circlesmall')[0].innerHTML = ' <div class="emoji  emoji--sad"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div><span>Sad</span>';
+                            } else {
+                                alert("User error");
+                            }
+
+                        }
+
+                    });
+
+                }, 1000 * 10)
+
+
+            });
+        </script>
+
+        <div id="box">
+
+            <div class="parameter" class="top" id="Atmo">
+
+                <div class="widget">
+
+                    <div class="left-panel panel">
+                        <div id="date">
+
+                            <script>
+                                n = new Date();
+                                y = n.getFullYear();
+                                m = n.getMonth() + 1;
+                                d = n.getDate();
+                                const monthNames = ["January", "February", "March", "April", "May", "June",
+                                    "July", "August", "September", "October", "November", "December"
+                                ];
+                                document.getElementById("date").innerHTML = monthNames[m - 1] + " " + d + ", " + y;
+                            </script>
+                        </div>
+                        <div class="city">
+                            Dubai
+                        </div>
+                        <div class="temp">
+                            <img src="https://s5.postimg.cc/yzcm7htyb/image.png" alt="" width="60"> 27&deg;
+                        </div>
+                    </div>
+                    <div class="right-panel panel">
+                        <img src="https://s5.postimg.cc/lifnombwz/mumbai1.png" alt="" width="160">
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="parameter" class="top" id="Light">
+                <div class="sheet">
+                    <div id="lampadario">
+                        <input type="radio" name="switch" value="on" />
+                        <input type="radio" name="switch" value="off" checked="checked" />
+                        <label for="switch"></label>
+                        <div id="filo"></div>
+                        <div id="lampadina">
+                        </div>
+                    </div>
+                    <div id="lightintro">Light Intensity</div>
+                    <p id="lightlevel"></p>
+                    <div id="yellow"></div>
+                </div>
+            </div>
+            <div class="parameter" id="Music">
+                <div class="player">
+                    <div class="current-track">
+                        <figure class="albumn-cover">
+                            <img src="http://upload.wikimedia.org/wikipedia/en/c/ce/The_Fray_Helios.jpg" alt="Helios by The Fray" />
+                        </figure>
+                        <div class="track-name">
+                            <h1>
+                                <a href="http://en.wikipedia.org/wiki/Helios_(album)#Track_listing">Love Don't Die</a>
+                            </h1>
+                            <h2>
+                                <span class="artist">
+                                    <a href="http://en.wikipedia.org/wiki/The_Fray">The Fray</a>
+                                </span> &ndash;
+                                <span class="album">
+                                    <a href="http://en.wikipedia.org/wiki/Helios_(album)#Track_listing">Helios</a>
+                                </span>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <ul>
+                            <li class="active toggle">
+                                <i class="fa fa-repeat"></i>
+                            </li>
+                            <li>
+                                <i class="fa fa-fast-backward"></i>
+                            </li>
+                            <li>
+                                <i class="fa fa-pause"></i>
+                            </li>
+                            <li>
+                                <i class="fa fa-fast-forward"></i>
+                            </li>
+                            <li class="toggle">
+                                <i class="fa fa-random"></i>
+                            </li>
+                            <li>
+                                <i class="fa fa-ellipsis-v"></i>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="progress">
+                        <div class="bar" style="width:75%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="parameter" id="Message">
+                <div class="sheet">
+                    <button class='button'>Get Quote</button>
+                    <div class='jumbotron quotes'>
+
+                        <span class='text'></span>
+
+                    </div>
+                </div>
+            </div>
+            <div class='circlebig'></div>
+            <div class='circlesmall'>
+                <div class="emoji  emoji--sad">
+                    <div class="emoji__face">
+                        <div class="emoji__eyebrows"></div>
+                        <div class="emoji__eyes"></div>
+                        <div class="emoji__mouth"></div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+                <span>Sad</span>
+
+            </div>
+
+        </div>
+
+        <!-- <div class ="circle-container">
+            
+            
+
+        </div> -->
+
+    </section>
+
+
+
+    <!-- Footer for copyright info-->
+    <footer>
+
+        <small>&copy; Copyright 2019, Mood.io</small>
+    </footer>
+</body>
+
+</html>
