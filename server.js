@@ -1,5 +1,6 @@
 var express = require('express'); //starting express server 
 var app = express();
+const nano = require('nano')('http://localhost:5984');
 app.use(express.static(__dirname)); //gets directory
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -10,6 +11,34 @@ var lastname = "";
 var email = "";
 var id = "";
 var arr = ["happy", "sad", "angry"];
+
+
+// var mqtt = require("mqtt");
+// var client = mqtt.connect("mqtt://broker.hivemq.com");
+
+// client.on("connect", function() {
+//   client.subscribe("Act", function(err) {
+//     if (!err) {
+//       client.publish("Act", "Light_On");
+//     }
+//   });
+// });
+
+// client.on("message", function(topic, message) {
+//   // message is Buffer
+//   console.log(message.toString());
+//   // client.end()
+// });
+
+// app.get("/", (req, res) => {
+//     let message = req.query.message;
+
+//     client.publish("Act", message);
+//     client.end()
+//     res.end();
+
+// });
+
 
 
 app.set('port', process.env.PORT || 3004); //on port 3004
@@ -26,6 +55,25 @@ app.get('/signup', function(req, res) { // get request for signup page
 app.get('/customize', function(req, res) { //get request for customize page
     res.sendFile(__dirname + "/customize.html");
 });
+app.post('/testpost', urlencodedParser, function(req, res) {
+    // Prepare output in JSON format
+    console.log(req.body.heartrate);
+    res.send({
+        Name: "Jason",
+        Mood: "Derulo"
+    });
+})
+
+nano.db.create('accounts').then((data) => {
+    // success - response is in 'data'
+}).catch((err) => {
+    // failure - error information is in 'err'
+})
+nano.db.create('sensors').then((data) => {
+    // success - response is in 'data'
+}).catch((err) => {
+    // failure - error information is in 'err'
+})
 
 app.get('/mood', function(req, res) {
     var nano = require('nano')('http://localhost:5984');
@@ -72,8 +120,8 @@ app.get('/mood', function(req, res) {
 });
 app.post('/signup', urlencodedParser, function(req, res) {
 
-    var nano = require('nano')('http://localhost:5984');
-    var test_db = nano.db.use('accounts');
+
+    test_db = nano.db.use('accounts');
     // inserting document
     var userdata = {
         "user": req.body.username,
@@ -94,7 +142,6 @@ app.post('/signup', urlencodedParser, function(req, res) {
 
 app.post('/addpreferences', urlencodedParser, function(req, res) {
 
-    var nano = require('nano')('http://localhost:5984');
     var test_db = nano.db.use('accounts');
     // inserting document
     var userdata = {
@@ -132,7 +179,7 @@ app.post('/addpreferences', urlencodedParser, function(req, res) {
 })
 app.get('/addsensors', urlencodedParser, function(req, res) {
 
-    var nano = require('nano')('http://localhost:5984');
+
     var test_db = nano.db.use('sensors');
     var hrm = Math.floor(Math.random() * (140 - 50) + 50);
     var light = Math.floor(Math.random() * 499);
@@ -217,9 +264,51 @@ app.post('/logincheck', urlencodedParser, function(req, res) {
 
 })
 
+app.post('/loginwatch', urlencodedParser, function(req, res) {
+
+    var nano = require('nano')('http://localhost:5984');
+    var test_db = nano.db.use('accounts');
+    username = req.body.username;
+
+    const q = {
+        selector: {
+            user: { "$eq": req.body.username },
+            //timestamp: { "$lt": parseInt(req.body.end_time) }
+        },
+        fields: ["user", "password", "firstname", "lastname", "email"],
+        limit: 1
+    };
+    test_db.find(q).then((doc) => {
+
+        if (doc != null) {
+
+            doc.docs.forEach((row) => {
+                password = row.password;
+                firstname = row.firstname;
+                lastname = row.lastname;
+                email = row.email;
+                //console.log(row);
+                if (req.body.password === row.password) {
+
+                    res.send(true);
+
+                } else {
+                    res.send(false);
+                }
+            });
+        } else {
+            res.send(false);
+        }
+
+    });
+
+
+
+})
+
 app.get('/loginretrieve', urlencodedParser, function(req, res) {
 
-        var nano = require('nano')('http://localhost:5984');
+
         var test_db = nano.db.use('accounts');
 
 
