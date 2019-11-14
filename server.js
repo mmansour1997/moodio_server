@@ -43,6 +43,7 @@ var arr = ["happy", "sad", "angry"];
 
 app.set('port', process.env.PORT || 3004); //on port 3004
 
+// Pages
 app.get('/', function(req, res) { //get request for login page
     res.sendFile(__dirname + "/moodlogin.html");
 });
@@ -55,6 +56,8 @@ app.get('/signup', function(req, res) { // get request for signup page
 app.get('/customize', function(req, res) { //get request for customize page
     res.sendFile(__dirname + "/customize.html");
 });
+
+// test
 app.post('/testpost', urlencodedParser, function(req, res) {
     // Prepare output in JSON format
     console.log(req.body.heartrate);
@@ -83,8 +86,6 @@ app.get('/mood', function(req, res) {
     var userdata = {
         "user": username,
         "mood": mood
-
-
     };
 
     var data = JSON.stringify({
@@ -177,7 +178,7 @@ app.post('/addpreferences', urlencodedParser, function(req, res) {
     res.send(true);
 
 })
-app.get('/addsensors', urlencodedParser, function(req, res) {
+app.post('/addsensors', urlencodedParser, function(req, res) {
 
 
     var test_db = nano.db.use('sensors');
@@ -219,13 +220,14 @@ app.get('/addsensors', urlencodedParser, function(req, res) {
         }
     })
 
-    res.end(data);
+    res.end("Sensor values received and added to database!");
 
 })
 app.post('/logincheck', urlencodedParser, function(req, res) {
 
     var nano = require('nano')('http://localhost:5984');
     var test_db = nano.db.use('accounts');
+
     username = req.body.username;
 
     const q = {
@@ -270,26 +272,25 @@ app.post('/loginwatch', urlencodedParser, function(req, res) {
     var test_db = nano.db.use('accounts');
     username = req.body.username;
 
+    console.log("Username: " + req.body.username);
+    console.log("Password: " + req.body.password);
+
     const q = {
         selector: {
             user: { "$eq": req.body.username },
             //timestamp: { "$lt": parseInt(req.body.end_time) }
         },
-        fields: ["user", "password", "firstname", "lastname", "email"],
+        fields: ["user", "password"],
         limit: 1
     };
     test_db.find(q).then((doc) => {
 
-        if (doc != null) {
-
+        if (doc.docs.length > 0) {
+            console.log(doc);
             doc.docs.forEach((row) => {
                 password = row.password;
-                firstname = row.firstname;
-                lastname = row.lastname;
-                email = row.email;
-                //console.log(row);
+                console.log(row);
                 if (req.body.password === row.password) {
-
                     res.send(true);
 
                 } else {
