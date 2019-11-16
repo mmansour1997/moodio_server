@@ -10,7 +10,7 @@ var firstname = "";
 var lastname = "";
 var email = "";
 var id = "";
-var mood = "";
+var mood = "angry";
 
 
 // var mqtt = require("mqtt");
@@ -98,7 +98,7 @@ app.get('/mood', function(req, res) {
     //     mood: mood
     // });
 
-
+    console.log("Mood requested!");
 
     res.send(mood);
 
@@ -212,12 +212,15 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
     if (hrmReading < 70) {
         //res.send("sad");
         mood = "sad";
+        res.send(mood);
     } else if (hrmReading >= 70 && hrmReading < 100) {
         //res.send("happy");
         mood = "happy";
+        res.send(mood);
     } else {
         //res.send("angry");
         mood = "angry";
+        res.send(mood);
     }
 
 
@@ -249,7 +252,7 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
             }
         })
         // store the calculated mood to DB
-    res.send(mood);
+    
 })
 app.post('/logincheck', urlencodedParser, function(req, res) {
 
