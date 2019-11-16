@@ -75,7 +75,7 @@
                 setInterval(() => {
 
                     $.ajax({
-                        type: 'POST',
+                        type: 'GET',
                         cache: false,
                         url: "/mood",
                         success: function(data) {
@@ -83,9 +83,9 @@
                             if (data == "happy") {
                                 document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--yay"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__mouth"></div></div></div>';
                             } else if (data == "sad") {
-                                document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--angry"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div>';
-                            } else if (data == "angry") {
                                 document.getElementsByClassName('circlesmall')[0].innerHTML = ' <div class="emoji  emoji--sad"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div><span>Sad</span>';
+                            } else if (data == "angry") {
+                                document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--angry"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div>';
                             } else {
                                 alert("User error");
                             }
