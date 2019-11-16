@@ -37,39 +37,6 @@
 
         <!-- the navigation bar options menu-->
         <div class="menu">
-            <p id="HRM">
-
-            </p>
-            <p id="light">
-
-            </p>
-            <script>
-                $(document).ready(function() {
-                    setInterval(() => {
-                        $.ajax({
-                            type: 'POST',
-                            cache: false,
-                            url: "/addsensors",
-                            success: function(data) {
-                                if (data) {
-                                    var obj = JSON.parse(data);
-                                    document.getElementById("HRM").innerHTML = obj.HRM;
-                                    document.getElementById("light").innerHTML = obj.light;
-                                    console.log(obj.HRM);
-                                    console.log(obj.light);
-                                    console.log("Sensor values received from watch successfully");
-
-                                } else {
-                                    alert("User error");
-                                }
-
-                            }
-
-                        });
-                    }, 1000 * 10)
-
-                });
-            </script>
 
             <button id="btn1" type="button">Happy</button>
             <script>
@@ -108,17 +75,16 @@
                 setInterval(() => {
 
                     $.ajax({
-                        type: 'GET',
+                        type: 'POST',
                         cache: false,
-                        url: "/mood",
+                        url: "/addsensors",
                         success: function(data) {
-                            var obj = JSON.parse(data);
-                            if (obj.mood == "happy") {
-
+                            console.log(data.toString());
+                            if (data == "happy") {
                                 document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--yay"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__mouth"></div></div></div>';
-                            } else if (obj.mood == "sad") {
+                            } else if (data == "sad") {
                                 document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--angry"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div>';
-                            } else if (obj.mood == "angry") {
+                            } else if (data == "angry") {
                                 document.getElementsByClassName('circlesmall')[0].innerHTML = ' <div class="emoji  emoji--sad"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div><span>Sad</span>';
                             } else {
                                 alert("User error");

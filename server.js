@@ -84,43 +84,23 @@ nano.db.create('moods').then((data) => {
 })
 
 app.get('/mood', function(req, res) {
-    var nano = require('nano')('http://localhost:5984');
-    var test_db = nano.db.use('moods');
+    //var nano = require('nano')('http://localhost:5984');
+    //var test_db = nano.db.use('moods');
     //var mood = arr[Math.floor(Math.random() * 3)];
     // inserting document
-    var userdata = {
-        "user": username,
-        "mood": mood
-    };
+    // var userdata = {
+    //     "user": username,
+    //     "mood": mood
+    // };
 
-    var data = JSON.stringify({
-        user: username,
-        mood: mood
-    });
+    // var data = JSON.stringify({
+    //     user: username,
+    //     mood: mood
+    // });
 
-    test_db.update =
-        function(obj, key, callback) {
-            var db = this;
-            db.get(key, function(error, existing) {
-                if (!error) {
-                    obj._rev = existing._rev;
-                    db.insert(obj, key, callback);
-                } else {
-                    db.insert(obj, callback);
-                }
-            });
-        }
-    test_db.update(userdata, id, function(err, res) {
-        if (!err) {
-            console.log(res);
 
-        } else {
-            console.log(err);
 
-        }
-    })
-
-    res.end(data);
+    res.send(mood);
 
 
 });
@@ -206,12 +186,6 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
         "light": lightReading
     };
 
-    var data = JSON.stringify({
-        user: username,
-        HRM: hrmReading,
-        light: lightReading
-    });
-
     test_db.update =
         function(obj, key, callback) {
             var db = this;
@@ -246,10 +220,36 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
         mood = "angry";
     }
 
-    res.end(data);
 
-    // store the calculated mood to DB
 
+    var test_db2 = nano.db.use('moods');
+    var mooddata = {
+        "user": username,
+        "mood": mood
+    };
+    test_db2.update =
+        function(obj, key, callback) {
+            var db = this;
+            db.get(key, function(error, existing) {
+                if (!error) {
+                    obj._rev = existing._rev;
+                    db.insert(obj, key, callback);
+                } else {
+                    db.insert(obj, callback);
+                }
+            });
+        }
+    test_db2.update(mooddata, id, function(err, res) {
+            if (!err) {
+                console.log(res);
+
+            } else {
+                console.log(err);
+
+            }
+        })
+        // store the calculated mood to DB
+    res.send(mood);
 })
 app.post('/logincheck', urlencodedParser, function(req, res) {
 
