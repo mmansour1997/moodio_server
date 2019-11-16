@@ -98,7 +98,7 @@ app.get('/mood', function(req, res) {
     //     mood: mood
     // });
 
-
+    console.log("Mood requested!");
 
     res.send(mood);
 
