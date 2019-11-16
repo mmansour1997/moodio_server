@@ -55,6 +55,10 @@
                                     var obj = JSON.parse(data);
                                     document.getElementById("HRM").innerHTML = obj.HRM;
                                     document.getElementById("light").innerHTML = obj.light;
+                                    console.log(obj.HRM);
+                                    console.log(obj.light);
+                                    console.log("Sensor values received from watch successfully");
+
                                 } else {
                                     alert("User error");
                                 }
@@ -104,7 +108,7 @@
                 setInterval(() => {
 
                     $.ajax({
-                        type: 'GET',
+                        type: 'POST',
                         cache: false,
                         url: "/mood",
                         success: function(data) {

@@ -10,7 +10,7 @@ var firstname = "";
 var lastname = "";
 var email = "";
 var id = "";
-var arr = ["happy", "sad", "angry"];
+var mood = "";
 
 
 // var mqtt = require("mqtt");
@@ -77,11 +77,16 @@ nano.db.create('sensors').then((data) => {
 }).catch((err) => {
     // failure - error information is in 'err'
 })
+nano.db.create('moods').then((data) => {
+    // success - response is in 'data'
+}).catch((err) => {
+    // failure - error information is in 'err'
+})
 
 app.get('/mood', function(req, res) {
     var nano = require('nano')('http://localhost:5984');
     var test_db = nano.db.use('moods');
-    var mood = arr[Math.floor(Math.random() * 3)];
+    //var mood = arr[Math.floor(Math.random() * 3)];
     // inserting document
     var userdata = {
         "user": username,
@@ -182,20 +187,29 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
 
 
     var test_db = nano.db.use('sensors');
-    var hrm = Math.floor(Math.random() * (140 - 50) + 50);
-    var light = Math.floor(Math.random() * 499);
-    // inserting document
+    // var hrm = Math.floor(Math.random() * (140 - 50) + 50);
+    // var light = Math.floor(Math.random() * 499);
+    // // inserting document
+    // var userdata = {
+    //     "user": username,
+    //     "HRM": hrm,
+    //     "light": light
+
+    // };
+
+    var hrmReading = req.body.hrm;
+    var lightReading = req.body.light;
+
     var userdata = {
         "user": username,
-        "HRM": hrm,
-        "light": light
-
+        "HRM": hrmReading,
+        "light": lightReading
     };
 
     var data = JSON.stringify({
         user: username,
-        HRM: hrm,
-        light: light
+        HRM: hrmReading,
+        light: lightReading
     });
 
     test_db.update =
@@ -210,17 +224,31 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
                 }
             });
         }
+
+    // store sensor reading to database
     test_db.update(userdata, id, function(err, res) {
         if (!err) {
             console.log(res);
-
         } else {
             console.log(err);
-
         }
     })
 
-    res.end("Sensor values received and added to database!");
+    // process sensor values to get mood (sample logic)
+    if (hrmReading < 70) {
+        //res.send("sad");
+        mood = "sad";
+    } else if (hrmReading >= 70 && hrmReading < 100) {
+        //res.send("happy");
+        mood = "happy";
+    } else {
+        //res.send("angry");
+        mood = "angry";
+    }
+
+    res.end(data);
+
+    // store the calculated mood to DB
 
 })
 app.post('/logincheck', urlencodedParser, function(req, res) {
