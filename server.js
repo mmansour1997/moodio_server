@@ -206,12 +206,15 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
         "light": lightReading
     };
 
+<<<<<<< HEAD
     var data = JSON.stringify({
         user: username,
         HRM: hrmReading,
         light: lightReading
     });
 
+=======
+>>>>>>> 03a228f51e0f31f038d6e6355609923f1c66100a
     test_db.update =
         function(obj, key, callback) {
             var db = this;
@@ -236,6 +239,7 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
 
     // process sensor values to get mood (sample logic)
     if (hrmReading < 70) {
+<<<<<<< HEAD
         //res.send("sad");
         mood = "sad";
     } else if (hrmReading >= 70 && hrmReading < 100) {
@@ -249,6 +253,16 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
     res.end(data);
 
     // store the calculated mood to DB
+=======
+        res.send("sad");
+    } else if (hrmReading >=70 && hrmReading < 100) {
+        res.send("happy");
+    } else {
+        res.send("angry");
+    }
+
+    // store the calculated mood to DB?
+>>>>>>> 03a228f51e0f31f038d6e6355609923f1c66100a
 
 })
 app.post('/logincheck', urlencodedParser, function(req, res) {

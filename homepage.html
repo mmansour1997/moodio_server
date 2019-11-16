@@ -47,7 +47,7 @@
                 $(document).ready(function() {
                     setInterval(() => {
                         $.ajax({
-                            type: 'GET',
+                            type: 'POST',
                             cache: false,
                             url: "/addsensors",
                             success: function(data) {
@@ -108,7 +108,7 @@
                 setInterval(() => {
 
                     $.ajax({
-                        type: 'POST',
+                        type: 'GET',
                         cache: false,
                         url: "/mood",
                         success: function(data) {
