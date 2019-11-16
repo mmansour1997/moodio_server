@@ -39,6 +39,7 @@
         <div class="menu">
 
             <button id="btn1" type="button">Happy</button>
+            <!-- Mood buttons, currently only for testing purposes -->
             <script>
                 document.getElementById('btn1').onclick = function() {
                     document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--yay"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__mouth"></div></div></div>';
@@ -71,7 +72,7 @@
     <!-- The main component of the landing page-->
     <section class="main">
         <script>
-            $(document).ready(function() {
+            $(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
                 setInterval(() => {
 
                     $.ajax({

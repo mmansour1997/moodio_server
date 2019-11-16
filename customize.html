@@ -42,7 +42,7 @@
     <!-- The main component of the landing page-->
     <div id="box">
         <script>
-            $(document).ready(function() {
+            $(document).ready(function() { //retrieve logged in userdata
                 $.ajax({
                     type: 'GET',
                     cache: false,
@@ -121,7 +121,7 @@
     </div>
     <script>
         $(document).ready(function() {
-            $('#submitbutton').on('click', function(event) {
+            $('#submitbutton').on('click', function(event) { //on clicking the button submit selected preferences to /addpreferences route
                 event.preventDefault();
                 var url = "http://localhost:3004/homepage";
                 $.ajax({
