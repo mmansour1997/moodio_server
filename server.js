@@ -83,7 +83,7 @@ nano.db.create('moods').then((data) => {
     // failure - error information is in 'err'
 })
 
-app.get('/mood', function(req, res) {
+app.post('/mood', function(req, res) {
     //var nano = require('nano')('http://localhost:5984');
     //var test_db = nano.db.use('moods');
     //var mood = arr[Math.floor(Math.random() * 3)];
