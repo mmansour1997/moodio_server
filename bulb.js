@@ -18,6 +18,6 @@ $(function() { //jquery function
         change: refreshSwatch //calls the refresh to set the slider on changing by clicking anywhere
     });
 
-    $("#yellow").slider("value", 255); //on the homepage loading sets the slider to 100%
+    //$("#yellow").slider("value", 255); //on the homepage loading sets the slider to 100%
 
 });
