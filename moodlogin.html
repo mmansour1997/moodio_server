@@ -65,7 +65,7 @@
                         <!--2 same buttons-->
                         <script>
                             $(document).ready(function() {
-                                $('#loginbutton').on('click', function(event) {
+                                $('#loginbutton').on('click', function(event) { //on clicking the button sign in submit login data to /login check route
                                     event.preventDefault();
                                     var url = "http://localhost:3004/homepage";
                                     $.ajax({
@@ -78,10 +78,10 @@
                                         url: "/logincheck",
                                         success: function(returns) {
                                             if (returns)
-                                                window.location.replace(url);
+                                                window.location.replace(url); //redirect to homepage if userdata is ok
 
                                             else {
-                                                alert("Wrong credentials");
+                                                alert("Wrong credentials"); //otherwise alert user
                                             }
 
                                         }

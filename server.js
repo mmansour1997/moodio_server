@@ -4,7 +4,7 @@ const nano = require('nano')('http://localhost:5984');
 app.use(express.static(__dirname)); //gets directory
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
-var username = "";
+var username = ""; //placeholders
 var password = "";
 var firstname = "";
 var lastname = "";
@@ -67,23 +67,27 @@ app.post('/testpost', urlencodedParser, function(req, res) {
     });
 })
 
-nano.db.create('accounts').then((data) => {
+nano.db.create('accounts').then((data) => { //create accounts db
     // success - response is in 'data'
 }).catch((err) => {
     // failure - error information is in 'err'
 })
-nano.db.create('sensors').then((data) => {
+nano.db.create('sensors').then((data) => { //create sensor db
     // success - response is in 'data'
 }).catch((err) => {
     // failure - error information is in 'err'
 })
-nano.db.create('moods').then((data) => {
+nano.db.create('moods').then((data) => { //create mood db
     // success - response is in 'data'
 }).catch((err) => {
     // failure - error information is in 'err'
 })
 
+<<<<<<< HEAD
 app.post('/mood', function(req, res) {
+=======
+app.get('/mood', function(req, res) { //mood route just sends current mood
+>>>>>>> 99780a899bc80f83f6c6058128b2e4b92d8a777f
     //var nano = require('nano')('http://localhost:5984');
     //var test_db = nano.db.use('moods');
     //var mood = arr[Math.floor(Math.random() * 3)];
@@ -104,12 +108,12 @@ app.post('/mood', function(req, res) {
 
 
 });
-app.post('/signup', urlencodedParser, function(req, res) {
+app.post('/signup', urlencodedParser, function(req, res) { //route for user signup
 
 
     test_db = nano.db.use('accounts');
     // inserting document
-    var userdata = {
+    var userdata = { //get user signup data from form
         "user": req.body.username,
         "password": req.body.password,
         "firstname": req.body.firstname,
@@ -117,20 +121,20 @@ app.post('/signup', urlencodedParser, function(req, res) {
         "email": req.body.email
 
     };
-    test_db.insert(userdata, function(err, body) {
+    test_db.insert(userdata, function(err, body) { //insert in db accounts
         if (!err) {
             //awesome
             console.log(JSON.stringify(userdata) + " document added")
         }
     });
-    res.sendFile(__dirname + "/moodlogin.html");
+    res.sendFile(__dirname + "/moodlogin.html"); //redirect to login page
 })
 
-app.post('/addpreferences', urlencodedParser, function(req, res) {
+app.post('/addpreferences', urlencodedParser, function(req, res) { //route to add user preferences from customize page
 
     var test_db = nano.db.use('accounts');
     // inserting document
-    var userdata = {
+    var userdata = { //get logged in userdata with preferences 
         "user": username,
         "password": password,
         "firstname": firstname,
@@ -142,7 +146,7 @@ app.post('/addpreferences', urlencodedParser, function(req, res) {
 
     };
 
-    test_db.update =
+    test_db.update = //update accounts db with logged in userdata
         function(obj, key, callback) {
             var db = this;
             db.get(key, function(error, existing) {
@@ -163,7 +167,7 @@ app.post('/addpreferences', urlencodedParser, function(req, res) {
     res.send(true);
 
 })
-app.post('/addsensors', urlencodedParser, function(req, res) {
+app.post('/addsensors', urlencodedParser, function(req, res) { //get sensor values from watch
 
 
     var test_db = nano.db.use('sensors');
@@ -177,16 +181,16 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
 
     // };
 
-    var hrmReading = req.body.hrm;
-    var lightReading = req.body.light;
+    var hrmReading = req.body.hrm; //get heart rate value
+    var lightReading = req.body.light; //get light value
 
-    var userdata = {
+    var userdata = { //save values to logged in user
         "user": username,
         "HRM": hrmReading,
         "light": lightReading
     };
 
-    test_db.update =
+    test_db.update = //update sensors db with user specific sensor values 
         function(obj, key, callback) {
             var db = this;
             db.get(key, function(error, existing) {
@@ -225,8 +229,8 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
 
 
 
-    var test_db2 = nano.db.use('moods');
-    var mooddata = {
+    var test_db2 = nano.db.use('moods'); //use moods db
+    var mooddata = { //store calculated user mood
         "user": username,
         "mood": mood
     };
@@ -242,7 +246,7 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
                 }
             });
         }
-    test_db2.update(mooddata, id, function(err, res) {
+    test_db2.update(mooddata, id, function(err, res) { //update db with mooddata
             if (!err) {
                 console.log(res);
 
@@ -252,9 +256,9 @@ app.post('/addsensors', urlencodedParser, function(req, res) {
             }
         })
         // store the calculated mood to DB
-    
+
 })
-app.post('/logincheck', urlencodedParser, function(req, res) {
+app.post('/logincheck', urlencodedParser, function(req, res) { //route to check login credentials
 
     var nano = require('nano')('http://localhost:5984');
     var test_db = nano.db.use('accounts');
@@ -263,32 +267,32 @@ app.post('/logincheck', urlencodedParser, function(req, res) {
 
     const q = {
         selector: {
-            user: { "$eq": req.body.username },
+            user: { "$eq": req.body.username }, //search by username
             //timestamp: { "$lt": parseInt(req.body.end_time) }
         },
         fields: ["user", "password", "firstname", "lastname", "email"],
         limit: 1
     };
-    test_db.find(q).then((doc) => {
+    test_db.find(q).then((doc) => { //if found
 
         if (doc != null) {
 
             doc.docs.forEach((row) => {
-                password = row.password;
+                password = row.password; //set placeholders
                 firstname = row.firstname;
                 lastname = row.lastname;
                 email = row.email;
                 //console.log(row);
-                if (req.body.password === row.password) {
+                if (req.body.password === row.password) { //check password
 
-                    res.send(true);
+                    res.send(true); //send true to browser
 
                 } else {
-                    res.send(false);
+                    res.send(false); //send false to browser
                 }
             });
         } else {
-            res.send(false);
+            res.send(false); //send false if user not found in db
         }
 
     });
@@ -297,7 +301,7 @@ app.post('/logincheck', urlencodedParser, function(req, res) {
 
 })
 
-app.post('/loginwatch', urlencodedParser, function(req, res) {
+app.post('/loginwatch', urlencodedParser, function(req, res) { //login through watch
 
     var nano = require('nano')('http://localhost:5984');
     var test_db = nano.db.use('accounts');
@@ -308,7 +312,7 @@ app.post('/loginwatch', urlencodedParser, function(req, res) {
 
     const q = {
         selector: {
-            user: { "$eq": req.body.username },
+            user: { "$eq": req.body.username }, //similar logic as before
             //timestamp: { "$lt": parseInt(req.body.end_time) }
         },
         fields: ["user", "password"],
@@ -338,7 +342,7 @@ app.post('/loginwatch', urlencodedParser, function(req, res) {
 
 })
 
-app.get('/loginretrieve', urlencodedParser, function(req, res) {
+app.get('/loginretrieve', urlencodedParser, function(req, res) { //route for homepage to retrieve data for logged in user
 
 
         var test_db = nano.db.use('accounts');
@@ -346,7 +350,7 @@ app.get('/loginretrieve', urlencodedParser, function(req, res) {
 
         const q = {
             selector: {
-                user: { "$eq": username },
+                user: { "$eq": username }, //select by current logged in user
                 //timestamp: { "$lt": parseInt(req.body.end_time) }
             },
             fields: ["user", "firstname", "lastname", "_id"],
@@ -359,7 +363,7 @@ app.get('/loginretrieve', urlencodedParser, function(req, res) {
                 doc.docs.forEach((row) => {
                     id = row._id;
                     //console.log(row);
-                    var data = JSON.stringify({
+                    var data = JSON.stringify({ //retrieve logged in user full name
                         firstname: row.firstname,
                         lastname: row.lastname
                     });
