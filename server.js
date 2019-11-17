@@ -11,7 +11,8 @@ var lastname = "";
 var email = "";
 var id = "";
 var mood = "angry";
-
+var hrmReading = 0;
+var lightReading = 500;
 
 // var mqtt = require("mqtt");
 // var client = mqtt.connect("mqtt://broker.hivemq.com");
@@ -82,7 +83,11 @@ nano.db.create('moods').then((data) => { //create mood db
 }).catch((err) => {
     // failure - error information is in 'err'
 })
+app.get('/lightreading', function(req, res) { //mood route just sends current mood
+    res.send(lightReading);
 
+
+});
 app.get('/mood', function(req, res) { //mood route just sends current mood
     //var nano = require('nano')('http://localhost:5984');
     //var test_db = nano.db.use('moods');
@@ -177,8 +182,8 @@ app.post('/addsensors', urlencodedParser, function(req, res) { //get sensor valu
 
     // };
 
-    var hrmReading = req.body.hrm; //get heart rate value
-    var lightReading = req.body.light; //get light value
+    hrmReading = req.body.hrm; //get heart rate value
+    lightReading = req.body.light; //get light value
 
     var userdata = { //save values to logged in user
         "user": username,

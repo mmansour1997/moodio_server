@@ -100,6 +100,28 @@
 
             });
         </script>
+        <script>
+            $(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
+                setInterval(() => {
+
+                    $.ajax({
+                        type: 'GET',
+                        cache: false,
+                        url: "/lightreading",
+                        success: function(data) {
+                            //console.log(data.toString());
+                            var light = (data / 500) * 255
+                            $("#yellow").slider("value", light);
+
+                        }
+
+                    });
+
+                }, 1000 * 10)
+
+
+            });
+        </script>
 
         <div id="box">
 
