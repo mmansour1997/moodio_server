@@ -101,7 +101,8 @@
             });
         </script>
         <script>
-            $(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
+            $(document).ready(function() {
+                $("#yellow").slider("value", 127.5); //Send GET request every 10 seconds to check for light intensity and update UI accordingly
                 setInterval(() => {
 
                     $.ajax({
@@ -110,7 +111,8 @@
                         url: "/lightreading",
                         success: function(data) {
                             //console.log(data.toString());
-                            var light = (data / 500) * 255
+                            var light = (parseInt(data) / 500) * 255
+                                //console.log(light.toString());
                             $("#yellow").slider("value", light);
 
                         }

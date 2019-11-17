@@ -12,7 +12,7 @@ var email = "";
 var id = "";
 var mood = "angry";
 var hrmReading = 0;
-var lightReading = 500;
+var lightReading = 0;
 
 // var mqtt = require("mqtt");
 // var client = mqtt.connect("mqtt://broker.hivemq.com");
@@ -84,7 +84,8 @@ nano.db.create('moods').then((data) => { //create mood db
     // failure - error information is in 'err'
 })
 app.get('/lightreading', function(req, res) { //mood route just sends current mood
-    res.send(lightReading);
+    res.send(lightReading.toString());
+    console.log(lightReading.toString());
 
 
 });
@@ -103,7 +104,7 @@ app.get('/mood', function(req, res) { //mood route just sends current mood
     //     mood: mood
     // });
 
-    console.log("Mood requested!");
+    //console.log("Mood requested!");
 
     res.send(mood);
 
