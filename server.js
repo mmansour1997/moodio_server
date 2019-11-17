@@ -85,7 +85,7 @@ nano.db.create('moods').then((data) => { //create mood db
 })
 app.get('/lightreading', function(req, res) { //mood route just sends current mood
     res.send(lightReading.toString());
-    console.log(lightReading.toString());
+    //console.log(lightReading.toString());
 
 
 });
