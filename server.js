@@ -88,12 +88,14 @@ app.get('/lightreading', function(req, res) { //mood route just sends current mo
     //console.log(lightReading.toString());
 
 
-<<<<<<< HEAD
 app.post('/mood', function(req, res) {
+<<<<<<< HEAD
 =======
 });
 app.get('/mood', function(req, res) { //mood route just sends current mood
 >>>>>>> 5dd16ca62b044f81b00c8ed1b7b64514f6c53983
+=======
+>>>>>>> working
     //var nano = require('nano')('http://localhost:5984');
     //var test_db = nano.db.use('moods');
     //var mood = arr[Math.floor(Math.random() * 3)];
