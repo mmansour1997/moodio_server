@@ -16,10 +16,10 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
     <script src="bulb.js"></script>
+    <script src="homepage.js"></script>
     <script type="text/javascript" src="messages.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
     <title>Mood.io</title>
-
-
 
 </head>
 
@@ -38,26 +38,7 @@
         <!-- the navigation bar options menu-->
         <div class="menu">
 
-            <button id="btn1" type="button">Happy</button>
-            <!-- Mood buttons, currently only for testing purposes -->
-            <script>
-                document.getElementById('btn1').onclick = function() {
-                    document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--yay"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__mouth"></div></div></div>';
-                }
-            </script>
-            <button id="btn2" type="button">Angry</button>
 
-            <script>
-                document.getElementById('btn2').onclick = function() {
-                    document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--angry"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div>';
-                }
-            </script>
-            <button id="btn3" type="button">Sad</button>
-            <script>
-                document.getElementById('btn3').onclick = function() {
-                    document.getElementsByClassName('circlesmall')[0].innerHTML = ' <div class="emoji  emoji--sad"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div><span>Sad</span>';
-                }
-            </script>
 
             <a href="http://localhost:3004/customize">Customize</a>
             <a href="http://localhost:3004/">Logout</a>
@@ -72,57 +53,8 @@
     <!-- The main component of the landing page-->
     <section class="main">
         <script>
-            $(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
-                setInterval(() => {
-
-                    $.ajax({
-                        type: 'GET',
-                        cache: false,
-                        url: "/mood",
-                        success: function(data) {
-                            console.log(data.toString());
-                            if (data == "happy") {
-                                document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--yay"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__mouth"></div></div></div>';
-                            } else if (data == "sad") {
-                                document.getElementsByClassName('circlesmall')[0].innerHTML = ' <div class="emoji  emoji--sad"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div><span>Sad</span>';
-                            } else if (data == "angry") {
-                                document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--angry"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div>';
-                            } else {
-                                alert("User error");
-                            }
-
-                        }
-
-                    });
-
-                }, 1000 * 10)
-
-
-            });
         </script>
         <script>
-            $(document).ready(function() {
-                $("#yellow").slider("value", 127.5); //Send GET request every 10 seconds to check for light intensity and update UI accordingly
-                setInterval(() => {
-
-                    $.ajax({
-                        type: 'GET',
-                        cache: false,
-                        url: "/lightreading",
-                        success: function(data) {
-                            //console.log(data.toString());
-                            var light = (parseInt(data) / 500) * 255
-                                //console.log(light.toString());
-                            $("#yellow").slider("value", light);
-
-                        }
-
-                    });
-
-                }, 1000 * 10)
-
-
-            });
         </script>
 
         <div id="box">
@@ -177,49 +109,41 @@
             <div class="parameter" id="Music">
                 <div class="player">
                     <div class="current-track">
-                        <figure class="albumn-cover">
-                            <img src="http://upload.wikimedia.org/wikipedia/en/c/ce/The_Fray_Helios.jpg" alt="Helios by The Fray" />
+                        <figure class="albumn-cover" id="songimage">
                         </figure>
                         <div class="track-name">
                             <h1>
-                                <a href="http://en.wikipedia.org/wiki/Helios_(album)#Track_listing">Love Don't Die</a>
+                                <p id="songname">
+
+                                </p>
                             </h1>
                             <h2>
-                                <span class="artist">
-                                    <a href="http://en.wikipedia.org/wiki/The_Fray">The Fray</a>
+                                <span class="artist" id="artist">
+                                    
                                 </span> &ndash;
-                                <span class="album">
-                                    <a href="http://en.wikipedia.org/wiki/Helios_(album)#Track_listing">Helios</a>
+                                <span class="album" id="album">
+                                   
                                 </span>
                             </h2>
                         </div>
                     </div>
                     <div class="controls">
-                        <ul>
-                            <li class="active toggle">
-                                <i class="fa fa-repeat"></i>
-                            </li>
-                            <li>
-                                <i class="fa fa-fast-backward"></i>
-                            </li>
-                            <li>
-                                <i class="fa fa-pause"></i>
-                            </li>
-                            <li>
-                                <i class="fa fa-fast-forward"></i>
-                            </li>
-                            <li class="toggle">
-                                <i class="fa fa-random"></i>
-                            </li>
-                            <li>
-                                <i class="fa fa-ellipsis-v"></i>
-                            </li>
-                        </ul>
+
+
+
+
+                        <button onclick="playpause()"><i class="fa fa-play"></i><i class="fa fa-pause"></i></button>
+
+
+
+
+
                     </div>
-                    <div class="progress">
-                        <div class="bar" style="width:75%"></div>
-                    </div>
+
                 </div>
+
+
+
             </div>
             <div class="parameter" id="Message">
                 <div class="sheet">
@@ -241,26 +165,9 @@
                     </div>
                 </div>
 
-
-
-
-
-
-
-
-
-
-                <span>Sad</span>
-
             </div>
 
         </div>
-
-        <!-- <div class ="circle-container">
-            
-            
-
-        </div> -->
 
     </section>
 

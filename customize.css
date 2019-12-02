@@ -29,7 +29,7 @@ body {
     grid-template-rows: auto repeat(4, min-content);
     /*  grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 10rem) [col-end]) [center-end] 1fr [full-end];*/
     position: relative;
-    background-image: linear-gradient(to left, lightgreen, yellow);
+    background-image: linear-gradient(to left, lightyellow, lightblue);
 }
 
 
@@ -113,6 +113,7 @@ body {
 }
 
 
+
 /* formatting the video itself*/
 
 
@@ -134,7 +135,7 @@ body {
     text-align: left;
     transform: translateY(13rem);
     display: grid;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto auto auto;
     grid-gap: 4rem;
 }
 
@@ -142,12 +143,17 @@ body {
     display: grid;
     grid-template-rows: auto auto;
     font-weight: bold;
-    font-size: 2rem;
+    font-size: 3rem;
 }
 
 #selgenre {
     text-align: center;
     font-size: 3rem;
+    background-image: linear-gradient(to left, rgb(68, 131, 224), black);
+    color: white;
+}
+#name{
+    font-size: 2rem;
 }
 
 .chooseC {
@@ -176,7 +182,7 @@ body {
 
 .selCus select {
     background-color: #0563af;
-    color: black;
+    color: white;
     padding: 12px;
     width: 250px;
     border: none;
@@ -220,6 +226,24 @@ body {
     background-color: orangered;
 }
 
+.subpref {
+    text-align: center;
+}
+.subpref button{
+    justify-self: center;
+    border-radius: 3rem;
+    padding: 2rem;
+    transition: transform 0.2s;
+    background-color:  rgb(68, 131, 224);
+    border: #0563af;
+    border-width: 1rem;
+    font-size: 1.7rem;
+    color: white;
+}
+
+.subpref button:hover {
+    transform: scale(1.1);
+}
 
 /*----------------------*/
 
@@ -236,3 +260,68 @@ footer {
     bottom: 0px;
     width: 100%;
 }
+
+
+  .muzieknootjes {
+    display: block;
+    margin: auto;
+    position: relative;
+    width: 50%;
+    min-width: 300px;
+    height: 200px;
+    border: 0px solid #000;
+  }
+  
+  .noot-1,
+  .noot-2,
+  .noot-3,
+  .noot-4 {
+    position: absolute;
+    animation: notes 2s infinite linear;
+    font-size: 35px;
+    opacity: 0;
+  }
+  
+  .noot-1 {
+    top: 60px;
+    left: 0;
+    animation-delay: 0.5s;
+  }
+  
+  .noot-2 {
+    top: 30px;
+    left: 30%;
+    animation-delay: 1s;
+  }
+  
+  .noot-3 {
+    top: 90px;
+    left: 60%;
+    animation-delay: 1.5s;
+  }
+  
+  .noot-4 {
+    top: 40px;
+    left: 90%;
+    animation-delay: 2s;
+  }
+  
+  @keyframes notes {
+    0% {
+      transform: scale(1) translate(0, 0);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.5) translate(50%, -50%);
+    }
+    80% {
+      opacity: 0;
+      transform: scale(1.5) translate(100%, -100%);
+    }
+    100% {
+      transform: scale(1.5) translate(100%, -100%);
+      opacity: 0;
+    }
+  }
+  

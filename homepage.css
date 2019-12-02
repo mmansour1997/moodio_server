@@ -332,8 +332,7 @@ button {
     color: #000;
 }
 
-footer button{
-    
+footer button {
     padding-right: 1rem;
     padding-left: 1rem;
     background-color: rgb(68, 131, 224);
@@ -342,4 +341,8 @@ footer button{
     color: white;
     font-size: 2rem;
     border-radius: 9px;
+}
+
+#songname {
+    color: black;
 }

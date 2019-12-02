@@ -10,35 +10,14 @@ var firstname = "";
 var lastname = "";
 var email = "";
 var id = "";
-var mood = "angry";
+var happysel = "";
+var sadsel = "";
+var angrysel = "";
+//var mood = "angry";
 var hrmReading = 0;
-var lightReading = 0;
+//var lightReading = 0;
+var moods = ["happy", "sad", "angry"];
 
-// var mqtt = require("mqtt");
-// var client = mqtt.connect("mqtt://broker.hivemq.com");
-
-// client.on("connect", function() {
-//   client.subscribe("Act", function(err) {
-//     if (!err) {
-//       client.publish("Act", "Light_On");
-//     }
-//   });
-// });
-
-// client.on("message", function(topic, message) {
-//   // message is Buffer
-//   console.log(message.toString());
-//   // client.end()
-// });
-
-// app.get("/", (req, res) => {
-//     let message = req.query.message;
-
-//     client.publish("Act", message);
-//     client.end()
-//     res.end();
-
-// });
 
 
 
@@ -79,41 +58,61 @@ nano.db.create('sensors').then((data) => { //create sensor db
     // failure - error information is in 'err'
 })
 nano.db.create('moods').then((data) => { //create mood db
-    // success - response is in 'data'
-}).catch((err) => {
-    // failure - error information is in 'err'
+        // success - response is in 'data'
+    }).catch((err) => {
+        // failure - error information is in 'err'
+    })
+    // app.get('/lightreading', function(req, res) { //sends light reading from watch to browser UI
+    //     res.send(lightReading.toString());
+    //     //console.log(lightReading.toString());
+
+
+// });
+// app.post('/mood', urlencodedParser, function(req, res) { //mood route just sends current mood
+//     //var nano = require('nano')('http://localhost:5984');
+//     //var test_db = nano.db.use('moods');
+
+//     // inserting document
+//     // var userdata = {
+//     //     "user": username,
+//     //     "mood": mood
+//     // };
+
+//     // var data = JSON.stringify({
+//     //     user: username,
+//     //     mood: mood
+//     // });
+
+//     console.log("Mood requested!");
+
+//     res.send(mood);
+
+
+// });
+var mqtt = require('mqtt')
+    //var client = mqtt.connect("mqtt://broker.mqttdashboard.com")
+var client = mqtt.connect([{
+    host: 'localhost',
+    port: 3000
+}]);
+client.on('connect', function() {
+    setInterval(() => {
+        var mood = moods[Math.floor(Math.random() * 3)];
+        var lightReading = Math.floor(Math.random() * 255)
+        client.publish('/happysel', happysel.toString())
+        client.publish('/sadsel', sadsel.toString())
+        client.publish('/angrysel', angrysel.toString())
+        client.publish('/mood', mood)
+        client.publish('/lightreading', lightReading.toString())
+
+    }, 1000 * 20)
+
 })
-app.get('/lightreading', function(req, res) { //mood route just sends current mood
-    res.send(lightReading.toString());
-    //console.log(lightReading.toString());
-
-
-<<<<<<< HEAD
-app.post('/mood', function(req, res) {
-=======
-});
-app.get('/mood', function(req, res) { //mood route just sends current mood
->>>>>>> 5dd16ca62b044f81b00c8ed1b7b64514f6c53983
-    //var nano = require('nano')('http://localhost:5984');
-    //var test_db = nano.db.use('moods');
-    //var mood = arr[Math.floor(Math.random() * 3)];
-    // inserting document
-    // var userdata = {
-    //     "user": username,
-    //     "mood": mood
-    // };
-
-    // var data = JSON.stringify({
-    //     user: username,
-    //     mood: mood
-    // });
-
-    //console.log("Mood requested!");
-
-    res.send(mood);
-
-
-});
+client.on('message', function(topic, message) {
+    // message is Buffer
+    console.log(message.toString())
+    client.end()
+})
 app.post('/signup', urlencodedParser, function(req, res) { //route for user signup
 
 
@@ -276,7 +275,7 @@ app.post('/logincheck', urlencodedParser, function(req, res) { //route to check 
             user: { "$eq": req.body.username }, //search by username
             //timestamp: { "$lt": parseInt(req.body.end_time) }
         },
-        fields: ["user", "password", "firstname", "lastname", "email"],
+        fields: ["user", "password", "firstname", "lastname", "email", "happysel", "sadsel", "angrysel"],
         limit: 1
     };
     test_db.find(q).then((doc) => { //if found
@@ -288,7 +287,10 @@ app.post('/logincheck', urlencodedParser, function(req, res) { //route to check 
                 firstname = row.firstname;
                 lastname = row.lastname;
                 email = row.email;
-                //console.log(row);
+                happysel = row.happysel;
+                sadsel = row.sadsel;
+                angrysel = row.angrysel;
+                //console.log(sadsel);
                 if (req.body.password === row.password) { //check password
 
                     res.send(true); //send true to browser

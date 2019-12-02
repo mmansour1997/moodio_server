@@ -66,7 +66,7 @@
 /* happy */
 
 .emoji--yay:after {
-    content: 'Yay';
+    content: '';
     -webkit-animation: yay-reverse 1s linear infinite;
     animation: yay-reverse 1s linear infinite;
 }
@@ -171,7 +171,7 @@
 }
 
 .emoji--angry:after {
-    content: 'Angry';
+    content: '';
 }
 
 .emoji--angry .emoji__face {

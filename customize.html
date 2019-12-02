@@ -7,9 +7,60 @@
 
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,400i|Nunito:300,300i" rel="stylesheet">
     <link rel="stylesheet" href="customize.css">
+    <link rel="stylesheet" href="emojis.css">
     <link rel="shortcut icon" type="image/png" href="img/apple-touch-icon-60x60.png">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
     <title>Mood.io</title>
+    <script>
+        $(document).ready(function () { //retrieve logged in userdata
+            $.ajax({
+                type: 'GET',
+                cache: false,
+                url: "/loginretrieve",
+                success: function (data) {
+                    if (data) {
+                        var obj = JSON.parse(data);
+                        document.getElementById("name").innerHTML = "Welcome: " + obj.firstname + " " + obj.lastname;
+                    } else {
+                        alert("User error");
+                    }
+
+                }
+
+            });
+
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#submitbutton').on('click', function (event) { //on clicking the button submit selected preferences to /addpreferences route
+                event.preventDefault();
+                var url = "http://localhost:3004/homepage";
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        happysel: document.getElementById("happysel").value,
+                        sadsel: document.getElementById("sadsel").value,
+                        angrysel: document.getElementById("angrysel").value
+                    },
+                    cache: false,
+                    url: "/addpreferences",
+                    success: function (returns) {
+                        if (returns)
+                            window.location.replace(url);
+
+
+                    }
+
+                });
+                event.preventDefault();
+            });
+        });
+
+    
+    </script>
 </head>
 
 <body class="container">
@@ -37,31 +88,12 @@
                 <source src="Blue-Mood.webm" type="video/webm">
                 Your browser is not supported!
             </video> -->
+
     </div>
 
     <!-- The main component of the landing page-->
     <div id="box">
-        <script>
-            $(document).ready(function() { //retrieve logged in userdata
-                $.ajax({
-                    type: 'GET',
-                    cache: false,
-                    url: "/loginretrieve",
-                    success: function(data) {
-                        if (data) {
-                            var obj = JSON.parse(data);
-                            document.getElementById("name").innerHTML = "Welcome " + obj.firstname + " " + obj.lastname;
-                        } else {
-                            alert("User error");
-                        }
 
-                    }
-
-                });
-
-
-            });
-        </script>
 
         <div class="welcomeC">
             <p id="name">
@@ -71,13 +103,19 @@
                 Select Mood to Music Preferences
             </div>
         </div>
-        <div class="chooseC">
+        <form class="chooseC">
 
-            <form>
-                <div class="genre">
-                    <label> Happy</label>
-                    <div class="selCus" id="happy">
-                        <select id="happysel">
+            <div class="genre">
+
+                <div class="emoji  emoji--yay">
+                    <div class="emoji__face">
+                        <div class="emoji__eyebrows"></div>
+                        <div class="emoji__mouth"></div>
+                    </div>
+                </div>
+
+                <div class="selCus" id="happy">
+                    <select id="happysel">
                         <option value="Pop">Pop</option>
                         <option value="Classical">Classical</option>
                         <option value="Alternative">Alternative</option>
@@ -85,13 +123,20 @@
                         <option value="Rap">Rap</option>
                         <option value="Blue">Blues</option>
                     </select>
+                </div>
+            </div>
+
+            <div class="genre">
+                <div class="emoji  emoji--sad">
+                    <div class="emoji__face">
+                        <div class="emoji__eyebrows"></div>
+                        <div class="emoji__eyes"></div>
+                        <div class="emoji__mouth"></div>
                     </div>
                 </div>
 
-                <div class="genre">
-                    <label> Sad</label>
-                    <div class="selCus" id="sad">
-                        <select id="sadsel">
+                <div class="selCus" id="sad">
+                    <select id="sadsel">
                         <option value="Classical">Classical</option>
                         <option value="Alternative">Alternative</option>
                         <option value="Pop">Pop</option>
@@ -99,13 +144,20 @@
                         <option value="Rap">Rap</option>
                         <option value="Blue">Blues</option>
                     </select>
+                </div>
+            </div>
+
+            <div class="genre">
+                <div class="emoji  emoji--angry">
+                    <div class="emoji__face">
+                        <div class="emoji__eyebrows"></div>
+                        <div class="emoji__eyes"></div>
+                        <div class="emoji__mouth"></div>
                     </div>
                 </div>
 
-                <div class="genre">
-                    <label> Angry</label>
-                    <div class="selCus" id="angry">
-                        <select id="angrysel">
+                <div class="selCus" id="angry">
+                    <select id="angrysel">
                         <option value="Rock">Rock</option>
                         <option value="Classical">Classical</option>
                         <option value="Alternative">Alternative</option>
@@ -113,39 +165,31 @@
                         <option value="Rap">Rap</option>
                         <option value="Blue">Blues</option>
                     </select>
-                    </div>
                 </div>
-                <a href="http://localhost:3004/homepage"> <button input type="submit" class="button" value="Submit" id="submitbutton">Submit preferences
-                </button></a>
+            </div>
+        </form>
+
+        <a class="subpref" href="http://localhost:3004/homepage">
+            <button input type="submit" class="button" value="Submit" id="submitbutton">Submit preferences
+            </button>
+        </a>
+        <div class="muzieknootjes">
+            <div class="noot-1">
+            &#9835; &#9833;
+          </div>
+          <div class="noot-2">
+            &#9833;
+          </div>
+          <div class="noot-3">
+            &#9839; &#9834;
+          </div>
+          <div class="noot-4">
+            &#9834;
+          </div>
+          </div>
         </div>
-    </div>
-    <script>
-        $(document).ready(function() {
-            $('#submitbutton').on('click', function(event) { //on clicking the button submit selected preferences to /addpreferences route
-                event.preventDefault();
-                var url = "http://localhost:3004/homepage";
-                $.ajax({
-                    type: 'POST',
-                    data: {
-                        happysel: document.getElementById("happysel").value,
-                        sadsel: document.getElementById("sadsel").value,
-                        angrysel: document.getElementById("angrysel").value
-                    },
-                    cache: false,
-                    url: "/addpreferences",
-                    success: function(returns) {
-                        if (returns)
-                            window.location.replace(url);
+       
 
-
-                    }
-
-                });
-                event.preventDefault();
-            });
-        });
-    </script>
-    </form>
     <!-- Footer for copyright info-->
     <footer>
         <small>&copy; Copyright 2019, Mood.io</small>
