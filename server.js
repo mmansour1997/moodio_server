@@ -67,29 +67,10 @@ nano.db.create('moods').then((data) => { //create mood db
     //     //console.log(lightReading.toString());
 
 
-<<<<<<< HEAD
-app.post('/mood', function(req, res) {
-<<<<<<< HEAD
-=======
-});
-app.get('/mood', function(req, res) { //mood route just sends current mood
->>>>>>> 5dd16ca62b044f81b00c8ed1b7b64514f6c53983
-=======
->>>>>>> working
-    //var nano = require('nano')('http://localhost:5984');
-    //var test_db = nano.db.use('moods');
-    //var mood = arr[Math.floor(Math.random() * 3)];
-    // inserting document
-    // var userdata = {
-    //     "user": username,
-    //     "mood": mood
-    // };
-=======
 // });
 // app.post('/mood', urlencodedParser, function(req, res) { //mood route just sends current mood
 //     //var nano = require('nano')('http://localhost:5984');
 //     //var test_db = nano.db.use('moods');
->>>>>>> 70d4d3e3985fe699240f16db5842bcae27e90748
 
 //     // inserting document
 //     // var userdata = {
@@ -143,6 +124,9 @@ app.post('/signup', urlencodedParser, function(req, res) { //route for user sign
         "firstname": req.body.firstname,
         "lastname": req.body.lastname,
         "email": req.body.email
+
+
+        
 
     };
     test_db.insert(userdata, function(err, body) { //insert in db accounts
