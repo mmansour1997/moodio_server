@@ -8,6 +8,8 @@ song.type = 'audio/mp3';
 var happysel = "";
 var sadsel = "";
 var angrysel = "";
+var city;
+
 
 function setsong(sel) {
     if (sel == "Pop") {
@@ -51,7 +53,47 @@ function playpause() {
         song.play();
     }
 }
-$(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
+
+function getweather() {
+    $.ajax({
+        url: 'http://api.openweathermap.org/data/2.5/weather?q=' + city + "&units=metric" + "&APPID=c49f2a5b07ce03250befb407c4410be3",
+        type: "GET",
+        dataType: "jsonp",
+        success: function(data) {
+
+            console.log(data.main.temp);
+            $('#temperature').html(data.main.temp + "&deg");
+
+
+
+        }
+    });
+}
+$(document).ready(function() {
+
+    $.ajax({
+        url: "https://geolocation-db.com/jsonp",
+        jsonpCallback: "callback",
+        dataType: "jsonp",
+        success: function(location) {
+            $('#country').html(location.country_name);
+            $('#state').html(location.state);
+            $('#city').html(location.city);
+            $('#latitude').html(location.latitude);
+            $('#longitude').html(location.longitude);
+            $('#ip').html(location.IPv4);
+            console.log(location.city);
+            city = location.city;
+            getweather();
+
+
+        }
+
+    });
+
+
+
+
 
 
     var wsbroker = "localhost"; //mqtt websocket enabled broker

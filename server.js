@@ -4,9 +4,9 @@ const nano = require('nano')('http://localhost:5984');
 app.use(express.static(__dirname)); //gets directory
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
-var username = "";      //placeholder
-var password = "";      //placeholder
-var deviceId = "";      //placeholder
+var username = ""; //placeholder
+var password = ""; //placeholder
+var deviceId = ""; //placeholder
 var firstname = "";
 var lastname = "";
 var email = "";
@@ -14,10 +14,11 @@ var id = "";
 var happysel = "";
 var sadsel = "";
 var angrysel = "";
-//var mood = "angry";
+var mood = "angry";
 var hrmReading = 0;
 //var lightReading = 0;
 var moods = ["happy", "sad", "angry"];
+var flag = "false";
 
 
 
@@ -25,21 +26,21 @@ var moods = ["happy", "sad", "angry"];
 app.set('port', process.env.PORT || 3004); //on port 3004
 
 // Pages
-app.get('/', function (req, res) { //get request for login page
+app.get('/', function(req, res) { //get request for login page
     res.sendFile(__dirname + "/moodlogin.html");
 });
-app.get('/homepage', function (req, res) { // get request for homepage
+app.get('/homepage', function(req, res) { // get request for homepage
     res.sendFile(__dirname + "/homepage.html");
 });
-app.get('/signup', function (req, res) { // get request for signup page
+app.get('/signup', function(req, res) { // get request for signup page
     res.sendFile(__dirname + "/moodsignup.html");
 });
-app.get('/customize', function (req, res) { //get request for customize page
+app.get('/customize', function(req, res) { //get request for customize page
     res.sendFile(__dirname + "/customize.html");
 });
 
 // test
-app.post('/testpost', urlencodedParser, function (req, res) {
+app.post('/testpost', urlencodedParser, function(req, res) {
     // Prepare output in JSON format
     console.log(req.body.heartrate);
     res.send({
@@ -59,13 +60,13 @@ nano.db.create('sensors').then((data) => { //create sensor db
     // failure - error information is in 'err'
 })
 nano.db.create('moods').then((data) => { //create mood db
-    // success - response is in 'data'
-}).catch((err) => {
-    // failure - error information is in 'err'
-})
-// app.get('/lightreading', function(req, res) { //sends light reading from watch to browser UI
-//     res.send(lightReading.toString());
-//     //console.log(lightReading.toString());
+        // success - response is in 'data'
+    }).catch((err) => {
+        // failure - error information is in 'err'
+    })
+    // app.get('/lightreading', function(req, res) { //sends light reading from watch to browser UI
+    //     res.send(lightReading.toString());
+    //     //console.log(lightReading.toString());
 
 
 // });
@@ -91,12 +92,12 @@ nano.db.create('moods').then((data) => { //create mood db
 
 // });
 var mqtt = require('mqtt')
-//var client = mqtt.connect("mqtt://broker.mqttdashboard.com")
+    //var client = mqtt.connect("mqtt://broker.mqttdashboard.com")
 var client = mqtt.connect([{
     host: 'localhost',
     port: 3000
 }]);
-client.on('connect', function () {
+client.on('connect', function() {
     setInterval(() => {
         var mood = moods[Math.floor(Math.random() * 3)];
         var lightReading = Math.floor(Math.random() * 255)
@@ -109,12 +110,133 @@ client.on('connect', function () {
     }, 1000 * 20)
 
 })
-client.on('message', function (topic, message) {
+client.on('message', function(topic, message) {
     // message is Buffer
     console.log(message.toString())
     client.end()
 })
-app.post('/signup', urlencodedParser, function (req, res) { //route for user signup
+
+var client2 = mqtt.connect('mqtt://broker.hivemq.com');
+client2.on('connect', function() {
+    client2.subscribe('moodio/login', function(err) {
+        console.log("topic2 connected")
+            //client2.publish('moodio/login', 'please work');
+    })
+})
+client2.on('message', function(topic, message) {
+    var nano = require('nano')('http://localhost:5984');
+    var test_db = nano.db.use('accounts');
+    var string = JSON.parse(message);
+    //console.log(message);
+    username = string.username;
+    deviceId = string.devid;
+
+
+    console.log("Username: " + string.username);
+    console.log("Password: " + string.password);
+    console.log("Device ID: " + string.devid);
+
+    const q = {
+        selector: {
+            user: { "$eq": string.username }, //similar logic as before
+            //timestamp: { "$lt": parseInt(req.body.end_time) }
+        },
+        fields: ["_id",
+            "user",
+            "password",
+            "firstname",
+            "lastname",
+            "email",
+            "happysel",
+            "sadsel",
+            "angrysel",
+            "devid"
+        ],
+        limit: 1
+    };
+
+    test_db.find(q).then((doc) => {
+        flag = "true";
+
+
+        if (doc.docs.length > 0) {
+            console.log(doc);
+            doc.docs.forEach((row) => {
+                password = row.password;
+                console.log(row);
+                if (string.password === row.password) {
+                    client2.publish('moodio/login', 'true');
+                    //console.log("oleeeeeeeeeeeeeeeeeeeee");
+                    // check if user watch device ID is registered
+                    if (row.devid == "null") {
+                        //update the user account with retrieved device ID
+                        test_db.update =
+                            function(obj, key, callback) {
+                                var db = this;
+                                db.get(key, function(error, existing) {
+                                    if (!error) {
+                                        obj._rev = existing._rev;
+                                        db.insert(obj, key, callback);
+                                    } else {
+                                        db.insert(obj, callback);
+                                    }
+                                });
+                            }
+
+                        var newUserData = { //updated user data with device ID
+                            "user": row.user,
+                            "password": row.password,
+                            "firstname": row.firstname,
+                            "lastname": row.lastname,
+                            "email": row.email,
+                            "happysel": row.happysel,
+                            "sadsel": row.sadsel,
+                            "angrysel": row.angrysel,
+                            "devid": deviceId // update device ID of user JSON doc
+                        };
+
+                        test_db.update(newUserData, row._id, function(err) {
+                            if (!err) {
+
+                            } else console.log(err);
+                        })
+                    }
+
+                } else {
+                    client2.publish('moodio/login', 'false');
+                }
+
+                if (flag == "false") {
+                    client2.publish('moodio/login', 'false');
+                }
+            });
+        }
+        // });
+
+        // message is Buffer
+        //console.log(message.toString())
+        //client2.end()
+    })
+});
+
+var client3 = mqtt.connect('mqtt://broker.hivemq.com');
+client3.on('connect', function() {
+    client3.subscribe('moodio/mood', function(err) {
+        console.log("topic3 connected")
+            //client2.publish('moodio/login', 'please work');
+    })
+})
+client3.on('message', function(topic, message) {
+    console.log(message.toString());
+    if (message.toString() == "moodreq") {
+        client3.publish('moodio/mood', mood);
+    }
+    // message is Buffer
+    //console.log(message.toString())
+    //client.end()
+})
+
+app.post('/signup', urlencodedParser, function(req, res) { //route for user signup
 
 
     test_db = nano.db.use('accounts');
@@ -130,7 +252,7 @@ app.post('/signup', urlencodedParser, function (req, res) { //route for user sig
         "angrysel": "",
         "devid": "null"
     };
-    test_db.insert(userdata, function (err, body) { //insert in db accounts
+    test_db.insert(userdata, function(err, body) { //insert in db accounts
         if (!err) {
             //awesome
             console.log(JSON.stringify(userdata) + " document added")
@@ -139,7 +261,7 @@ app.post('/signup', urlencodedParser, function (req, res) { //route for user sig
     res.sendFile(__dirname + "/moodlogin.html"); //redirect to login page
 })
 
-app.post('/addpreferences', urlencodedParser, function (req, res) { //route to add user preferences from customize page
+app.post('/addpreferences', urlencodedParser, function(req, res) { //route to add user preferences from customize page
 
     var test_db = nano.db.use('accounts');
     // inserting document
@@ -156,14 +278,14 @@ app.post('/addpreferences', urlencodedParser, function (req, res) { //route to a
     };
 
     test_db.update = //update accounts db with logged in userdata
-        function (obj, key, callback) {
+        function(obj, key, callback) {
             var db = this;
-            db.get(key, function (error, existing) {
+            db.get(key, function(error, existing) {
                 if (!error) obj._rev = existing._rev;
                 db.insert(obj, key, callback);
             });
         }
-    test_db.update(userdata, id, function (err, res) {
+    test_db.update(userdata, id, function(err, res) {
         if (!err) {
             console.log(res);
 
@@ -176,7 +298,7 @@ app.post('/addpreferences', urlencodedParser, function (req, res) { //route to a
     res.send(true);
 
 })
-app.post('/addsensors', urlencodedParser, function (req, res) { //get sensor values from watch
+app.post('/addsensors', urlencodedParser, function(req, res) { //get sensor values from watch
 
 
     var test_db = nano.db.use('sensors');
@@ -200,9 +322,9 @@ app.post('/addsensors', urlencodedParser, function (req, res) { //get sensor val
     };
 
     test_db.update = //update sensors db with user specific sensor values 
-        function (obj, key, callback) {
+        function(obj, key, callback) {
             var db = this;
-            db.get(key, function (error, existing) {
+            db.get(key, function(error, existing) {
                 if (!error) {
                     obj._rev = existing._rev;
                     db.insert(obj, key, callback);
@@ -213,7 +335,7 @@ app.post('/addsensors', urlencodedParser, function (req, res) { //get sensor val
         }
 
     // store sensor reading to database
-    test_db.update(userdata, id, function (err, res) {
+    test_db.update(userdata, id, function(err, res) {
         if (!err) {
             console.log(res);
         } else {
@@ -244,9 +366,9 @@ app.post('/addsensors', urlencodedParser, function (req, res) { //get sensor val
         "mood": mood
     };
     test_db2.update =
-        function (obj, key, callback) {
+        function(obj, key, callback) {
             var db = this;
-            db.get(key, function (error, existing) {
+            db.get(key, function(error, existing) {
                 if (!error) {
                     obj._rev = existing._rev;
                     db.insert(obj, key, callback);
@@ -255,19 +377,19 @@ app.post('/addsensors', urlencodedParser, function (req, res) { //get sensor val
                 }
             });
         }
-    test_db2.update(mooddata, id, function (err, res) { //update db with mooddata
-        if (!err) {
-            console.log(res);
+    test_db2.update(mooddata, id, function(err, res) { //update db with mooddata
+            if (!err) {
+                console.log(res);
 
-        } else {
-            console.log(err);
+            } else {
+                console.log(err);
 
-        }
-    })
-    // store the calculated mood to DB
+            }
+        })
+        // store the calculated mood to DB
 
 })
-app.post('/logincheck', urlencodedParser, function (req, res) { //route to check login credentials
+app.post('/logincheck', urlencodedParser, function(req, res) { //route to check login credentials
 
     var nano = require('nano')('http://localhost:5984');
     var test_db = nano.db.use('accounts');
@@ -313,7 +435,7 @@ app.post('/logincheck', urlencodedParser, function (req, res) { //route to check
 
 })
 
-app.post('/loginwatch', urlencodedParser, function (req, res) { //login through watch
+app.post('/loginwatch', urlencodedParser, function(req, res) { //login through watch
 
     var nano = require('nano')('http://localhost:5984');
     var test_db = nano.db.use('accounts');
@@ -329,17 +451,16 @@ app.post('/loginwatch', urlencodedParser, function (req, res) { //login through 
             user: { "$eq": req.body.username }, //similar logic as before
             //timestamp: { "$lt": parseInt(req.body.end_time) }
         },
-        fields: 
-        ["_id",
-        "user", 
-        "password",
-        "firstname",
-        "lastname",
-        "email",
-        "happysel",
-        "sadsel",
-        "angrysel", 
-        "devid"
+        fields: ["_id",
+            "user",
+            "password",
+            "firstname",
+            "lastname",
+            "email",
+            "happysel",
+            "sadsel",
+            "angrysel",
+            "devid"
         ],
         limit: 1
     };
@@ -357,9 +478,9 @@ app.post('/loginwatch', urlencodedParser, function (req, res) { //login through 
                     if (row.devid == "null") {
                         //update the user account with retrieved device ID
                         test_db.update =
-                            function (obj, key, callback) {
+                            function(obj, key, callback) {
                                 var db = this;
-                                db.get(key, function (error, existing) {
+                                db.get(key, function(error, existing) {
                                     if (!error) {
                                         obj._rev = existing._rev;
                                         db.insert(obj, key, callback);
@@ -369,23 +490,22 @@ app.post('/loginwatch', urlencodedParser, function (req, res) { //login through 
                                 });
                             }
 
-                            var newUserData = { //updated user data with device ID
-                                "user": row.user,
-                                "password": row.password,
-                                "firstname": row.firstname,
-                                "lastname": row.lastname,
-                                "email": row.email,
-                                "happysel": row.happysel,
-                                "sadsel": row.sadsel,
-                                "angrysel": row.angrysel,
-                                "devid": deviceId               // update device ID of user JSON doc
-                            };
+                        var newUserData = { //updated user data with device ID
+                            "user": row.user,
+                            "password": row.password,
+                            "firstname": row.firstname,
+                            "lastname": row.lastname,
+                            "email": row.email,
+                            "happysel": row.happysel,
+                            "sadsel": row.sadsel,
+                            "angrysel": row.angrysel,
+                            "devid": deviceId // update device ID of user JSON doc
+                        };
 
-                        test_db.update(newUserData, row._id, function (err, res) {
+                        test_db.update(newUserData, row._id, function(err, res) {
                             if (!err) {
                                 console.log(res);
-                            }
-                            else console.log(err);
+                            } else console.log(err);
                         })
                     }
 
@@ -403,54 +523,54 @@ app.post('/loginwatch', urlencodedParser, function (req, res) { //login through 
 
 })
 
-app.get('/loginretrieve', urlencodedParser, function (req, res) { //route for homepage to retrieve data for logged in user
+app.get('/loginretrieve', urlencodedParser, function(req, res) { //route for homepage to retrieve data for logged in user
 
 
-    var test_db = nano.db.use('accounts');
+        var test_db = nano.db.use('accounts');
 
 
-    const q = {
-        selector: {
-            user: { "$eq": username }, //select by current logged in user
-            //timestamp: { "$lt": parseInt(req.body.end_time) }
-        },
-        fields: ["user", "firstname", "lastname", "_id"],
-        limit: 1
-    };
-    test_db.find(q).then((doc) => {
+        const q = {
+            selector: {
+                user: { "$eq": username }, //select by current logged in user
+                //timestamp: { "$lt": parseInt(req.body.end_time) }
+            },
+            fields: ["user", "firstname", "lastname", "_id"],
+            limit: 1
+        };
+        test_db.find(q).then((doc) => {
 
-        if (doc != null) {
+            if (doc != null) {
 
-            doc.docs.forEach((row) => {
-                id = row._id;
-                //console.log(row);
-                var data = JSON.stringify({ //retrieve logged in user full name
-                    firstname: row.firstname,
-                    lastname: row.lastname
+                doc.docs.forEach((row) => {
+                    id = row._id;
+                    //console.log(row);
+                    var data = JSON.stringify({ //retrieve logged in user full name
+                        firstname: row.firstname,
+                        lastname: row.lastname
+                    });
+                    res.end(data);
                 });
-                res.end(data);
-            });
-        }
+            }
 
-    });
+        });
 
 
 
-})
-// custom 404 page
-app.use(function (req, res) { //404 error
+    })
+    // custom 404 page
+app.use(function(req, res) { //404 error
     res.type('text/plain');
     res.status(404);
     res.send('404 - Not Found');
 });
 
 // custom 500 page
-app.use(function (err, req, res, next) { //500 error
+app.use(function(err, req, res, next) { //500 error
     console.error(err.stack);
     res.type('text/plain');
     res.status(500);
     res.send('500 - Server Error');
 });
-app.listen(app.get('port'), function () { //listening on the port
+app.listen(app.get('port'), function() { //listening on the port
     console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
 });
