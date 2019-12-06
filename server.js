@@ -236,6 +236,53 @@ client3.on('message', function(topic, message) {
     //client.end()
 })
 
+//////////////////////////// WATCH SENSORS ////////////////////////////////////////////////////////////////////////////////////
+
+var rrReadings = [];    // create buffer of 150 RR-interval readings received from the watch
+// var receivingReadings = false;
+// var calculatingMood = false;
+
+var client4 = mqtt.connect('mqtt://broker.hivemq.com');
+client4.on('connect', function() {
+    client4.subscribe('moodio/sensors/hrm', function(err) {
+        console.log("topic4 connected")
+    })
+})
+
+client4.on('message', function(topic, message) {
+    console.log(message.toString());    // DEBUG
+    // upon receiving RR-interval reading, add to buffer
+    var rrReading = parseInt(message.toString());
+    rrReadings.push(rrReading);
+    if (rrReadings.length >= 150) {
+        calculateMood();
+    }
+});
+
+function calculateMood() {
+
+    console.log("Calculating mood...");
+    var calculatedHRV = calculateRMS(rrReadings);
+    console.log("HRV = " + calculatedHRV);
+    rrReadings = [];
+
+}
+
+function calculateRMS(arr) { 
+	  
+	var sum_of_squares = arr.reduce(function(s,x) {return (s + x*x)}, 0);
+    return Math.sqrt(sum_of_squares / arr.length);
+    
+} 
+
+function sendMood() {
+
+
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 app.post('/signup', urlencodedParser, function(req, res) { //route for user signup
 
 
