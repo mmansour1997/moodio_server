@@ -344,7 +344,6 @@ function sendLight() {
 
         console.log("Calculated lamp light level = " + lightLevel);
         client.publish('moodio/actuators/lamp', lightLevel.toString());
-
     }
 
 }

@@ -103,9 +103,8 @@ $(document).ready(function() {
 
 
 
-
-    var wsbroker = "localhost"; //mqtt websocket enabled broker
-    var wsport = 3000 // port for above
+    var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
+    var wsport = 8000 // port for above
     var client = new Paho.MQTT.Client(wsbroker, wsport,
         "myclientid_" + parseInt(Math.random() * 100, 10));
     client.onConnectionLost = function(responseObject) {
@@ -138,8 +137,8 @@ $(document).ready(function() {
 $(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
 
 
-    var wsbroker = "localhost"; //mqtt websocket enabled broker
-    var wsport = 3000 // port for above
+    var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
+    var wsport = 8000 // port for above
     var client = new Paho.MQTT.Client(wsbroker, wsport,
         "myclientid_" + parseInt(Math.random() * 100, 10));
     client.onConnectionLost = function(responseObject) {
@@ -172,8 +171,8 @@ $(document).ready(function() { //Send GET request every 10 seconds to check for 
 $(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
 
 
-    var wsbroker = "localhost"; //mqtt websocket enabled broker
-    var wsport = 3000 // port for above
+    var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
+    var wsport = 8000 // port for above
     var client = new Paho.MQTT.Client(wsbroker, wsport,
         "myclientid_" + parseInt(Math.random() * 100, 10));
     client.onConnectionLost = function(responseObject) {
@@ -206,14 +205,15 @@ $(document).ready(function() { //Send GET request every 10 seconds to check for 
 $(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
 
 
-    var wsbroker = "localhost"; //mqtt websocket enabled broker
-    var wsport = 3000 // port for above
+    var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
+    var wsport = 8000 // port for above
     var client = new Paho.MQTT.Client(wsbroker, wsport,
         "myclientid_" + parseInt(Math.random() * 100, 10));
     client.onConnectionLost = function(responseObject) {
         console.log("connection lost: " + responseObject.errorMessage);
     };
     client.onMessageArrived = function(data) {
+        console.log("subscribed");
         //console.log(message.destinationName, ' -- ', message.payloadString);
         console.log(data.payloadString); //logs the mood
         //reflects the happy emoji if the mood is happy
@@ -246,7 +246,7 @@ $(document).ready(function() { //Send GET request every 10 seconds to check for 
         onSuccess: function() {
             console.log("mqtt connected");
             // Connection succeeded; subscribe to our topic, you can add multiple lines of these
-            client.subscribe('/mood', { qos: 0 });
+            client.subscribe('moodio/mood', { qos: 0 });
 
 
         },
@@ -263,8 +263,8 @@ $(document).ready(function() { //Send GET request every 10 seconds to check for 
 
 $(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
     $("#yellow").slider("value", (50 / 100) * 255);
-    var wsbroker = "localhost"; //mqtt websocket enabled broker
-    var wsport = 3000 // port for above
+    var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
+    var wsport = 8000 // port for above
     var client = new Paho.MQTT.Client(wsbroker, wsport,
         "myclientid_" + parseInt(Math.random() * 100, 10));
     client.onConnectionLost = function(responseObject) {
