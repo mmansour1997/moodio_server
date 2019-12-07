@@ -50,7 +50,6 @@ while True:
         emotion_probability = np.max(preds)
         label = EMOTIONS[preds.argmax()]
         break
-    else: continue
 
 
 

@@ -508,6 +508,8 @@ app.get('/camera', function(req, res) { //route to add user preferences from cus
 
         shell.exec('python C:\\Users\\user\\Desktop\\mood-p2-1022pm\\moodio_server\\Emotion-recognition-master\\real_time_video.py')
 
+        res.send(true);
+
     })
     // custom 404 page
 app.use(function(req, res) { //404 error
