@@ -36,6 +36,10 @@ app.get('/customize', function(req, res) { //get request for customize page
     res.sendFile(__dirname + "/customize.html");
 });
 
+app.get('/campage', function(req, res) { //get request for customize page
+    res.sendFile(__dirname + "/campage.html");
+});
+
 // ----------------------------------------------------------------- //
 
 ///////////////////////////////////////////////////////////////////////
