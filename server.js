@@ -65,8 +65,9 @@ nano.db.create('moods').then((data) => { //create mood db
 //////////////////////////////// MQTT SETUP ///////////////////////////
 ///////////////////////////////////////////////////////////////////////
 
+var broker = "mqtt://broker.hivemq.com";
 var mqtt = require('mqtt')
-var client = mqtt.connect('mqtt://broker.hivemq.com');
+var client = mqtt.connect(broker);
 client.on('connect', function () {
 
     // subscribe to all topics
@@ -194,9 +195,6 @@ client.on('message', function (topic, message) {
         if (messageString == "moodreq") {
             console.log("Mood requested! Publishing " + mood);
             client.publish('moodio/mood', mood);
-        } else if (messageString == "happy" || messageString == "sad" || messageString == "angry") {
-            console.log("Mood manually set " + mood);
-            mood = messageString;
         }
 
     } else if (topic == "moodio/sensors/light") {
@@ -242,7 +240,7 @@ var watchMoodDone = false;  // flag to check whether server completed mood calcu
 var camMoodDone = false;    // flag to check whether server received mood calculation from camera
 var watchMood = "";         // stores mood calculated from watch HRM sensor
 var cameraMood = "";        // stores mood calculated from camera
-var mood = "";              // stores overall mood after combining watch and camera moods
+var mood = "happy";         // stores overall mood after combining watch and camera moods; default mood is happy
 
 var rrReadings = [];    // create buffer of 150 RR-interval readings received from the watch
 
