@@ -12,8 +12,9 @@ emotion_model_path = 'C:\\Users\\user\\Desktop\\mood-p2-1022pm\\moodio_server\\E
 # loading models
 face_detection = cv2.CascadeClassifier(detection_model_path)
 emotion_classifier = load_model(emotion_model_path, compile=False)
-EMOTIONS = ["angry" ,"disgust","scared", "happy", "sad", "surprised",
- "neutral"]
+# EMOTIONS = ["angry" ,"disgust","scared", "happy", "sad", "surprised", "neutral"]
+EMOTIONS = ["angry" ,"angry","sad", "happy", "sad", "happy",
+ "sad"]
 
 
 #feelings_faces = []

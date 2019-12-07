@@ -254,6 +254,8 @@ body {
     align-self: center;
     height: 15rem;
     width: 15rem;
+    border: dashed;
+    padding: 2rem;
 }
 
 
