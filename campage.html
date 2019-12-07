@@ -1,0 +1,125 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,400i|Nunito:300,300i" rel="stylesheet">
+    <link rel="stylesheet" href="campage.css">
+    <link rel="stylesheet" href="emojis.css">
+    <link rel="shortcut icon" type="image/png" href="img/apple-touch-icon-60x60.png">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <title>Mood.io</title>
+
+</head>
+
+<body class="container">
+
+    <!-- the navigation bar -->
+    <div class="navigation">
+
+        <!-- The logo for now only has the title, the logo itself to be implemented in the future -->
+        <div class="logo">
+            <a href="http://localhost:3004/">
+                <span class="logo__text">Mood.io</span>
+            </a>
+        </div>
+
+        <!-- the navigation bar options menu-->
+        <div class="menu">
+            <a href="http://localhost:3004/homepage">Home</a>
+            <a href="http://localhost:3004/customize">Customize</a>
+            <a href="http://localhost:3004/">Logout</a>
+        </div>
+    </div>
+
+    <!-- The background image -->
+    <div class="bg-video">
+        <!-- <video class="bg-video__content" autoplay muted loop>
+                <source src="Blue-Mood.webm" type="video/webm">
+                Your browser is not supported!
+            </video> -->
+
+    </div>
+
+    <!-- The main component of the landing page-->
+    <div id="box">
+
+
+        <div class="welcomeC">
+            <p id="name">
+            </p>
+
+            <div id="selgenre">
+                Face the Camera to Detect Mood
+            </div>
+        </div>
+        <form class="chooseC">
+
+            <div class="genre">
+                <img src="camicon.png" alt="cam_icon" id="cam_icon">
+            </div>
+
+
+
+
+        </form>
+
+        <!-- <a class="subpref" href="http://localhost:3004/homepage">
+            <button input type="submit" class="button" value="Submit" id="submitbutton">Compute Facial Mood
+            </button>
+            <button onclick="document.getElementById('cam_icon').src='C:\\Users\\user\\Desktop\\Emotion-recognition-master\\real_time_video.py'" id="submitbutton">Compute Facial Mood</button>
+
+        </a> -->
+
+        <div class="subpref">
+            <button input type="submit" class="button" value="Submit" id="cambutton">Compute Facial Mood
+            </button>
+
+
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#cambutton').on('click', function(event) { //on clicking the button submit selected preferences to /addpreferences route
+                    event.preventDefault();
+                    var url = "http://localhost:3004/homepage";
+                    $.ajax({
+                        type: 'GET',
+                        cache: false,
+                        url: "/camera",
+                        success: function(returns) {
+                            if (returns)
+                                window.location.replace(url);
+
+
+                        }
+
+                    });
+                    event.preventDefault();
+                });
+            });
+        </script>
+        <div class="muzieknootjes">
+            <div class="noot-1">
+                &#9835; &#9833;
+            </div>
+            <div class="noot-2">
+                &#9833;
+            </div>
+            <div class="noot-3">
+                &#9839; &#9834;
+            </div>
+            <div class="noot-4">
+                &#9834;
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Footer for copyright info-->
+    <footer>
+        <small>&copy; Copyright 2019, Mood.io</small>
+    </footer>
+
+</html>

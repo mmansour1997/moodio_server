@@ -23,17 +23,21 @@ app.set('port', process.env.PORT || 3004); //on port 3004
 //////////////////////////////// PAGES ////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 
-app.get('/', function (req, res) { //get request for login page
+app.get('/', function(req, res) { //get request for login page
     res.sendFile(__dirname + "/moodlogin.html");
 });
-app.get('/homepage', function (req, res) { // get request for homepage
+app.get('/homepage', function(req, res) { // get request for homepage
     res.sendFile(__dirname + "/homepage.html");
 });
-app.get('/signup', function (req, res) { // get request for signup page
+app.get('/signup', function(req, res) { // get request for signup page
     res.sendFile(__dirname + "/moodsignup.html");
 });
-app.get('/customize', function (req, res) { //get request for customize page
+app.get('/customize', function(req, res) { //get request for customize page
     res.sendFile(__dirname + "/customize.html");
+});
+
+app.get('/campage', function(req, res) { //get request for customize page
+    res.sendFile(__dirname + "/campage.html");
 });
 
 // ----------------------------------------------------------------- //
@@ -71,19 +75,19 @@ var client = mqtt.connect(broker);
 client.on('connect', function () {
 
     // subscribe to all topics
-    client.subscribe('moodio/login', function (err) {
+    client.subscribe('moodio/login', function(err) {
         console.log("moodio/login")
     })
-    client.subscribe('moodio/mood', function (err) {
+    client.subscribe('moodio/mood', function(err) {
         console.log("moodio/mood")
     })
-    client.subscribe('moodio/sensors/light', function (err) {
+    client.subscribe('moodio/sensors/light', function(err) {
         console.log("moodio/sensors/light")
     })
-    client.subscribe('moodio/sensors/hrm', function (err) {
+    client.subscribe('moodio/sensors/hrm', function(err) {
         console.log("moodio/sensors/hrm")
     })
-    client.subscribe('moodio/sensors/camera', function (err) {
+    client.subscribe('moodio/sensors/camera', function(err) {
         console.log("moodio/sensors/hrm")
     })
     console.log("Connected to broker!");
@@ -93,13 +97,13 @@ client.on('connect', function () {
         client.publish('/happysel', happysel.toString())
         client.publish('/sadsel', sadsel.toString())
         client.publish('/angrysel', angrysel.toString())
-        //client.publish('moodio/mood', mood)
-        //client.publish('/lightreading', lightReading.toString())
+            //client.publish('moodio/mood', mood)
+            //client.publish('/lightreading', lightReading.toString())
 
     }, 1000 * 3)
 
 })
-client.on('message', function (topic, message) {
+client.on('message', function(topic, message) {
 
     if (topic == "moodio/login") {
         var nano = require('nano')('http://localhost:5984');
@@ -148,9 +152,9 @@ client.on('message', function (topic, message) {
                         if (row.devid == "null") {
                             //update the user account with retrieved device ID
                             test_db.update =
-                                function (obj, key, callback) {
+                                function(obj, key, callback) {
                                     var db = this;
-                                    db.get(key, function (error, existing) {
+                                    db.get(key, function(error, existing) {
                                         if (!error) {
                                             obj._rev = existing._rev;
                                             db.insert(obj, key, callback);
@@ -172,7 +176,7 @@ client.on('message', function (topic, message) {
                                 "devid": deviceId // update device ID of user JSON doc
                             };
 
-                            test_db.update(newUserData, row._id, function (err) {
+                            test_db.update(newUserData, row._id, function(err) {
                                 if (!err) {
 
                                 } else console.log(err);
@@ -199,7 +203,7 @@ client.on('message', function (topic, message) {
 
     } else if (topic == "moodio/sensors/light") {
 
-        console.log("Received light level: " + message.toString());    // DEBUG
+        console.log("Received light level: " + message.toString()); // DEBUG
         lightReading = parseInt(message.toString());
 
     } else if (topic == "moodio/sensors/hrm") {
@@ -214,7 +218,7 @@ client.on('message', function (topic, message) {
 
     } else if (topic == "moodio/sensors/camera") {
 
-        console.log("Received mood calc from camera: " + message.toString());    // DEBUG
+        console.log("Received mood calc from camera: " + message.toString()); // DEBUG
         cameraMood = message.toString();
         camMoodDone = true;
         if (camMoodDone && watchMoodDone) {
@@ -242,7 +246,7 @@ var watchMood = "";         // stores mood calculated from watch HRM sensor
 var cameraMood = "";        // stores mood calculated from camera
 var mood = "happy";         // stores overall mood after combining watch and camera moods; default mood is happy
 
-var rrReadings = [];    // create buffer of 150 RR-interval readings received from the watch
+var rrReadings = []; // create buffer of 150 RR-interval readings received from the watch
 
 function calculateMoodFromWatch() {
 
@@ -250,17 +254,17 @@ function calculateMoodFromWatch() {
     var calculatedHRV = calculateRMS(rrReadings);
     console.log("HRV = " + calculatedHRV);
     // HRV ranges adapted from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6813458/
-    if (calculatedHRV < 90) {                                   // 0 <= HRV < 90 denotes sad
+    if (calculatedHRV < 90) { // 0 <= HRV < 90 denotes sad
         watchMood = "sad";
-    } else if (calculatedHRV >= 90 || calculatedHRV < 110) {    // 90 <= HRV < 110 denotes angry
+    } else if (calculatedHRV >= 90 || calculatedHRV < 110) { // 90 <= HRV < 110 denotes angry
         watchMood = "angry";
-    } else {                                                    // HRV >= 110 denotes happy
+    } else { // HRV >= 110 denotes happy
         watchMood = "happy";
     }
     console.log("Calculated mood from watch HRM sensor vals: " + watchMood);
 
     watchMoodDone = true;
-    rrReadings = [];        // clear RR interval readings buffer
+    rrReadings = []; // clear RR interval readings buffer
     if (camMoodDone && watchMoodDone) {
         combineMoods();
     }
@@ -271,23 +275,23 @@ function combineMoods() {
     // called if server received mood calculations from watch and camera
     // meant to reconcile both mood calculations if conflict occurs (different mood readings)
 
-    if (watchMood == cameraMood) {  // if no conflict between watch and camera mood calculations, set mood
+    if (watchMood == cameraMood) { // if no conflict between watch and camera mood calculations, set mood
         mood = cameraMood;
         console.log("Camera and watch mood calculations coherent! Global mood set to " + mood);
-    } else {                       // if there is conflict, randomly pick between camera or watch mood calculations
-        var randomNum = randomIntFromInterval(0, 1);    // generate random number 0 or 1
-        if (randomNum == 0) {   // if 0, consider watch mood
+    } else { // if there is conflict, randomly pick between camera or watch mood calculations
+        var randomNum = randomIntFromInterval(0, 1); // generate random number 0 or 1
+        if (randomNum == 0) { // if 0, consider watch mood
             mood = watchMood;
             console.log("Camera and watch mood conflicting! Global mood RANDOMLY set to watch: " + mood);
         } else {
-            mood = cameraMood;  // if 1, consider camera mood
+            mood = cameraMood; // if 1, consider camera mood
             console.log("Camera and watch mood conflicting! Global mood RANDOMLY set to camera: " + mood);
         }
     }
-    
+
     // after done combining two mood calcs, reset flags
-    watchMoodDone = false;  
-    camMoodDone = false;  
+    watchMoodDone = false;
+    camMoodDone = false;
 
     sendMood();
     calculateLight();
@@ -321,7 +325,7 @@ function randomIntFromInterval(min, max) { // min and max included
 
 function calculateRMS(arr) {
 
-    var sum_of_squares = arr.reduce(function (s, x) { return (s + x * x) }, 0);
+    var sum_of_squares = arr.reduce(function(s, x) { return (s + x * x) }, 0);
     return Math.sqrt(sum_of_squares / arr.length);
 
 }
@@ -342,7 +346,6 @@ function sendLight() {
 
         console.log("Calculated lamp light level = " + lightLevel);
         client.publish('moodio/actuators/lamp', lightLevel.toString());
-        
     }
 
 }
@@ -353,7 +356,7 @@ function sendLight() {
 /////////////////////////// WEBSITE ROUTES  ///////////////////////////
 ///////////////////////////////////////////////////////////////////////
 
-app.post('/signup', urlencodedParser, function (req, res) { //route for user signup
+app.post('/signup', urlencodedParser, function(req, res) { //route for user signup
 
 
     test_db = nano.db.use('accounts');
@@ -369,7 +372,7 @@ app.post('/signup', urlencodedParser, function (req, res) { //route for user sig
         "angrysel": "",
         "devid": "null"
     };
-    test_db.insert(userdata, function (err, body) { //insert in db accounts
+    test_db.insert(userdata, function(err, body) { //insert in db accounts
         if (!err) {
             //awesome
             console.log(JSON.stringify(userdata) + " document added")
@@ -378,7 +381,7 @@ app.post('/signup', urlencodedParser, function (req, res) { //route for user sig
     res.sendFile(__dirname + "/moodlogin.html"); //redirect to login page
 })
 
-app.post('/addpreferences', urlencodedParser, function (req, res) { //route to add user preferences from customize page
+app.post('/addpreferences', urlencodedParser, function(req, res) { //route to add user preferences from customize page
 
     var test_db = nano.db.use('accounts');
     // inserting document
@@ -395,14 +398,14 @@ app.post('/addpreferences', urlencodedParser, function (req, res) { //route to a
     };
 
     test_db.update = //update accounts db with logged in userdata
-        function (obj, key, callback) {
+        function(obj, key, callback) {
             var db = this;
-            db.get(key, function (error, existing) {
+            db.get(key, function(error, existing) {
                 if (!error) obj._rev = existing._rev;
                 db.insert(obj, key, callback);
             });
         }
-    test_db.update(userdata, id, function (err, res) {
+    test_db.update(userdata, id, function(err, res) {
         if (!err) {
             console.log(res);
 
@@ -416,7 +419,7 @@ app.post('/addpreferences', urlencodedParser, function (req, res) { //route to a
 
 })
 
- app.post('/logincheck', urlencodedParser, function (req, res) { //route to check login credentials
+app.post('/logincheck', urlencodedParser, function(req, res) { //route to check login credentials
 
     var nano = require('nano')('http://localhost:5984');
     var test_db = nano.db.use('accounts');
@@ -462,7 +465,7 @@ app.post('/addpreferences', urlencodedParser, function (req, res) { //route to a
 
 })
 
-app.get('/loginretrieve', urlencodedParser, function (req, res) { //route for homepage to retrieve data for logged in user
+app.get('/loginretrieve', urlencodedParser, function(req, res) { //route for homepage to retrieve data for logged in user
 
 
     var test_db = nano.db.use('accounts');
@@ -496,22 +499,32 @@ app.get('/loginretrieve', urlencodedParser, function (req, res) { //route for ho
 
 
 })
-// custom 404 page
-app.use(function (req, res) { //404 error
+
+app.get('/camera', function(req, res) { //route to add mood detection from web cam
+
+        const shell = require('shelljs')
+
+        shell.exec('python C:\\Users\\user\\Desktop\\mood-p2-1022pm\\moodio_server\\Emotion-recognition-master\\real_time_video.py') //execute python script
+
+        res.send(true);
+
+    })
+    // custom 404 page
+app.use(function(req, res) { //404 error
     res.type('text/plain');
     res.status(404);
     res.send('404 - Not Found');
 });
 
 // custom 500 page
-app.use(function (err, req, res, next) { //500 error
+app.use(function(err, req, res, next) { //500 error
     console.error(err.stack);
     res.type('text/plain');
     res.status(500);
     res.send('500 - Server Error');
 });
 
-app.listen(app.get('port'), function () { //listening on the port
+app.listen(app.get('port'), function() { //listening on the port
     console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
 });
 
