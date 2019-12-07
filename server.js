@@ -14,20 +14,15 @@ var id = "";
 var happysel = "";
 var sadsel = "";
 var angrysel = "";
-var lightLevel = 0;
-var lightReading = 0;
-var hrmReading = 0;
 // var moods = ["happy", "sad", "angry"];
 var flag = "false";
-var watchMoodDone = false;  // flag to check whether server completed mood calculation from watch HRM sensors
-var camMoodDone = false;    // flag to check whether server received mood calculation from camera
-var watchMood = "";         // stores mood calculated from watch HRM sensor
-var cameraMood = "";        // stores mood calculated from camera
-var mood = "";              // stores overall mood after combining watch and camera moods
 
 app.set('port', process.env.PORT || 3004); //on port 3004
 
-// Pages
+///////////////////////////////////////////////////////////////////////
+//////////////////////////////// PAGES ////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
 app.get('/', function (req, res) { //get request for login page
     res.sendFile(__dirname + "/moodlogin.html");
 });
@@ -40,6 +35,12 @@ app.get('/signup', function (req, res) { // get request for signup page
 app.get('/customize', function (req, res) { //get request for customize page
     res.sendFile(__dirname + "/customize.html");
 });
+
+// ----------------------------------------------------------------- //
+
+///////////////////////////////////////////////////////////////////////
+//////////////////////////////// COUCH DB /////////////////////////////
+///////////////////////////////////////////////////////////////////////
 
 // CouchDB
 nano.db.create('accounts').then((data) => { //create accounts db
@@ -58,7 +59,12 @@ nano.db.create('moods').then((data) => { //create mood db
     // failure - error information is in 'err'
 })
 
-// MQTT
+// ----------------------------------------------------------------- //
+
+///////////////////////////////////////////////////////////////////////
+//////////////////////////////// MQTT SETUP ///////////////////////////
+///////////////////////////////////////////////////////////////////////
+
 var mqtt = require('mqtt')
 var client = mqtt.connect('mqtt://broker.hivemq.com');
 client.on('connect', function () {
@@ -223,7 +229,20 @@ client.on('message', function (topic, message) {
 
 })
 
-//////////////////////////// WATCH SENSORS ////////////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------- //
+
+///////////////////////////////////////////////////////////////////////
+/////////////////////// MOOD CALCULATION LOGIC  ///////////////////////
+///////////////////////////////////////////////////////////////////////
+
+var lightLevel = 0;
+var lightReading = 0;
+var hrmReading = 0;
+var watchMoodDone = false;  // flag to check whether server completed mood calculation from watch HRM sensors
+var camMoodDone = false;    // flag to check whether server received mood calculation from camera
+var watchMood = "";         // stores mood calculated from watch HRM sensor
+var cameraMood = "";        // stores mood calculated from camera
+var mood = "";              // stores overall mood after combining watch and camera moods
 
 var rrReadings = [];    // create buffer of 150 RR-interval readings received from the watch
 
@@ -330,7 +349,11 @@ function sendLight() {
 
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------- //
+
+///////////////////////////////////////////////////////////////////////
+/////////////////////////// WEBSITE ROUTES  ///////////////////////////
+///////////////////////////////////////////////////////////////////////
 
 app.post('/signup', urlencodedParser, function (req, res) { //route for user signup
 
@@ -489,6 +512,9 @@ app.use(function (err, req, res, next) { //500 error
     res.status(500);
     res.send('500 - Server Error');
 });
+
 app.listen(app.get('port'), function () { //listening on the port
     console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
 });
+
+// ----------------------------------------------------------------- //
