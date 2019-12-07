@@ -78,11 +78,11 @@ function getweather() {
             console.log(data.main.temp);
             console.log(data.weather[0].main);
             $('#temperature').html(data.main.temp + "&deg");
-            if (data.weather.main[0] == "Clouds")
+            if (data.weather[0].main == "Clouds")
                 $('#wpic').html('<img  src="Cloud.png" alt="" width="">');
-            if (data.weather.main[0] == "Rain")
+            if (data.weather[0].main == "Rain")
                 $('#wpic').html('<img  src="Rain.png" alt="" width="">');
-            if (data.weather.main[0] == "Snow")
+            if (data.weather[0].main == "Snow")
                 $('#wpic').html('<img  src="Snow.png" alt="" width="">');
             if (data.weather[0].main == "Clear")
                 $('#wpic').html('<img  src="Sun.png" alt="" width="">');
