@@ -354,3 +354,8 @@ footer button {
 #temperature {
     color: black;
 }
+
+#wpic img {
+    width: 14rem;
+    height: 14rem;
+}
