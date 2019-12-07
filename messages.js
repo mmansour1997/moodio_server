@@ -41,8 +41,8 @@ $(document).ready(function() { // this js file gets the quote messages randomly
     var mood = "angry";
     $(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
 
-        var wsbroker = "localhost"; //mqtt websocket enabled broker
-        var wsport = 3000 // port for above
+        var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
+    var wsport = 8000 // port for above
         var client = new Paho.MQTT.Client(wsbroker, wsport,
             "myclientid_" + parseInt(Math.random() * 100, 10));
         client.onConnectionLost = function(responseObject) {
