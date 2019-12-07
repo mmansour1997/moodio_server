@@ -502,11 +502,11 @@ app.get('/loginretrieve', urlencodedParser, function(req, res) { //route for hom
 
 })
 
-app.get('/camera', function(req, res) { //route to add user preferences from customize page
+app.get('/camera', function(req, res) { //route to add mood detection from web cam
 
         const shell = require('shelljs')
 
-        shell.exec('python C:\\Users\\user\\Desktop\\mood-p2-1022pm\\moodio_server\\Emotion-recognition-master\\real_time_video.py')
+        shell.exec('python C:\\Users\\user\\Desktop\\mood-p2-1022pm\\moodio_server\\Emotion-recognition-master\\real_time_video.py') //execute python script
 
         res.send(true);
 
