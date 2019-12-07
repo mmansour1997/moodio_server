@@ -1,23 +1,19 @@
-//var mqtt = require('mqtt')
-//var client = mqtt.connect("mqtt://broker.mqttdashboard.com")
 var mood = "";
-var song = new Audio;
-var muted = false;
-var vol = 1;
-song.type = 'audio/mp3';
-var happysel = "";
+var song = new Audio; //audio HTML5 object
+song.type = 'audio/mp3'; //set to mp3
+var happysel = ""; //placeholder for preferences
 var sadsel = "";
 var angrysel = "";
-var city;
+var city; //placeholders
 var songname;
 var album;
 var artist;
 
 
 
-function setsong(sel) {
+function setsong(sel) { //function to set song details in browser 6 songs with 6 different genres
     if (sel == "Pop") {
-        song.src = "http://127.0.0.1:8887/Happy.mp3";
+        song.src = "http://127.0.0.1:8887/Happy.mp3"; //songs hosted on custom server
         document.getElementById("songname").innerHTML = "Happy";
         document.getElementById("artist").innerHTML = "Pharell Williams";
         document.getElementById("album").innerHTML = "Despicable Me 2";
@@ -47,20 +43,15 @@ function setsong(sel) {
         document.getElementById("artist").innerHTML = "B.B.King";
         document.getElementById("album").innerHTML = "Completely Well";
     }
-    songname = document.getElementById("songname").innerHTML;
+    songname = document.getElementById("songname").innerHTML; //save in placeholder
     artist = document.getElementById("artist").innerHTML;
     album = document.getElementById("album").innerHTML;
     console.log(songname);
     console.log(artist);
     console.log(album);
-
-    // message = new Paho.MQTT.Message("Hello");
-    // message.destinationName = "/World";
-    // client.send(message);
-
 }
 
-function playpause() {
+function playpause() { //play and pause function
     if (!song.paused) {
         song.pause();
     } else {
@@ -68,7 +59,7 @@ function playpause() {
     }
 }
 
-function getweather() {
+function getweather() { //function to get weather based on city from api and update with icons
     $.ajax({
         url: 'http://api.openweathermap.org/data/2.5/weather?q=' + city + "&units=metric" + "&APPID=c49f2a5b07ce03250befb407c4410be3",
         type: "GET",
@@ -93,7 +84,7 @@ function getweather() {
 }
 $(document).ready(function() {
 
-    $.ajax({
+    $.ajax({ //function to get current location on page load
         url: "https://geolocation-db.com/jsonp",
         jsonpCallback: "callback",
         dataType: "jsonp",
@@ -133,7 +124,7 @@ $(document).ready(function() {
         timeout: 3,
         onSuccess: function() {
             console.log("mqtt connected");
-            // Connection succeeded; subscribe to our topic, you can add multiple lines of these
+            // subscribe to happy mood preferences topic
             client.subscribe('/happysel', { qos: 0 });
 
 
@@ -149,7 +140,7 @@ $(document).ready(function() {
 
 });
 
-$(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
+$(document).ready(function() { //subscribe to control to enable remote music play from watch
 
 
     var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
@@ -166,7 +157,7 @@ $(document).ready(function() { //Send GET request every 10 seconds to check for 
             artist: artist,
             title: songname
         }
-        message = new Paho.MQTT.Message(JSON.stringify(songdetails));
+        message = new Paho.MQTT.Message(JSON.stringify(songdetails)); //send song details to watch on info topic
         message.destinationName = "moodio/music/info";
         client.send(message);
     };
@@ -190,7 +181,7 @@ $(document).ready(function() { //Send GET request every 10 seconds to check for 
 
 
 });
-$(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
+$(document).ready(function() {
 
 
     var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
@@ -209,7 +200,7 @@ $(document).ready(function() { //Send GET request every 10 seconds to check for 
         timeout: 3,
         onSuccess: function() {
             console.log("mqtt connected");
-            // Connection succeeded; subscribe to our topic, you can add multiple lines of these
+            // subscribe to sad mood preferences topic
             client.subscribe('/sadsel', { qos: 0 });
 
 
@@ -224,7 +215,7 @@ $(document).ready(function() { //Send GET request every 10 seconds to check for 
 
 
 });
-$(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
+$(document).ready(function() {
 
 
     var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
@@ -243,7 +234,7 @@ $(document).ready(function() { //Send GET request every 10 seconds to check for 
         timeout: 3,
         onSuccess: function() {
             console.log("mqtt connected");
-            // Connection succeeded; subscribe to our topic, you can add multiple lines of these
+            // subscribe to angry mood preferences topic
             client.subscribe('/angrysel', { qos: 0 });
 
 
@@ -258,7 +249,7 @@ $(document).ready(function() { //Send GET request every 10 seconds to check for 
 
 
 });
-$(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
+$(document).ready(function() { //Subscribe to mood topic and update UI accordingly
 
 
     var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
@@ -314,7 +305,7 @@ $(document).ready(function() { //Send GET request every 10 seconds to check for 
 
 });
 
-$(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
+$(document).ready(function() { //Subscribe to lightreading topic and update UI accordingly
     $("#yellow").slider("value", (50 / 100) * 255);
     var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
     var wsport = 8000 // port for above

@@ -42,7 +42,7 @@ $(document).ready(function() { // this js file gets the quote messages randomly
     $(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
 
         var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
-    var wsport = 8000 // port for above
+        var wsport = 8000 // port for above
         var client = new Paho.MQTT.Client(wsbroker, wsport,
             "myclientid_" + parseInt(Math.random() * 100, 10));
         client.onConnectionLost = function(responseObject) {
@@ -80,7 +80,7 @@ $(document).ready(function() { // this js file gets the quote messages randomly
             timeout: 3,
             onSuccess: function() {
                 console.log("mqtt connected");
-                // Connection succeeded; subscribe to our topic, you can add multile lines of these
+                // Subscribes too mood topic
                 client.subscribe('/mood', { qos: 0 });
 
 
