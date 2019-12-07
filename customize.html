@@ -9,16 +9,15 @@
     <link rel="stylesheet" href="customize.css">
     <link rel="stylesheet" href="emojis.css">
     <link rel="shortcut icon" type="image/png" href="img/apple-touch-icon-60x60.png">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <title>Mood.io</title>
     <script>
-        $(document).ready(function () { //retrieve logged in userdata
+        $(document).ready(function() { //retrieve logged in userdata
             $.ajax({
                 type: 'GET',
                 cache: false,
                 url: "/loginretrieve",
-                success: function (data) {
+                success: function(data) {
                     if (data) {
                         var obj = JSON.parse(data);
                         document.getElementById("name").innerHTML = "Welcome: " + obj.firstname + " " + obj.lastname;
@@ -34,8 +33,8 @@
         });
     </script>
     <script>
-        $(document).ready(function () {
-            $('#submitbutton').on('click', function (event) { //on clicking the button submit selected preferences to /addpreferences route
+        $(document).ready(function() {
+            $('#submitbutton').on('click', function(event) { //on clicking the button submit selected preferences to /addpreferences route
                 event.preventDefault();
                 var url = "http://localhost:3004/homepage";
                 $.ajax({
@@ -47,7 +46,7 @@
                     },
                     cache: false,
                     url: "/addpreferences",
-                    success: function (returns) {
+                    success: function(returns) {
                         if (returns)
                             window.location.replace(url);
 
@@ -58,8 +57,6 @@
                 event.preventDefault();
             });
         });
-
-    
     </script>
 </head>
 
@@ -172,23 +169,50 @@
         <a class="subpref" href="http://localhost:3004/homepage">
             <button input type="submit" class="button" value="Submit" id="submitbutton">Submit preferences
             </button>
+
+            <script>
+                $(document).ready(function() {
+                    $('#submitbutton').on('click', function(event) { //on clicking the button sign in submit login data to /login check route
+                        event.preventDefault();
+                        var url = "http://localhost:3004/homepage";
+                        $.ajax({
+                            type: 'POST',
+                            data: {
+                                username: document.getElementById("username").value,
+                                password: document.getElementById("password").value,
+                            },
+                            cache: false,
+                            url: "/logincheck",
+                            success: function(returns) {
+                                if (returns)
+                                    window.location.replace(url); //redirect to homepage if userdata is ok
+
+
+
+                            }
+
+                        });
+                        event.preventDefault();
+                    });
+                });
+            </script>
         </a>
         <div class="muzieknootjes">
             <div class="noot-1">
-            &#9835; &#9833;
-          </div>
-          <div class="noot-2">
-            &#9833;
-          </div>
-          <div class="noot-3">
-            &#9839; &#9834;
-          </div>
-          <div class="noot-4">
-            &#9834;
-          </div>
-          </div>
+                &#9835; &#9833;
+            </div>
+            <div class="noot-2">
+                &#9833;
+            </div>
+            <div class="noot-3">
+                &#9839; &#9834;
+            </div>
+            <div class="noot-4">
+                &#9834;
+            </div>
         </div>
-       
+    </div>
+
 
     <!-- Footer for copyright info-->
     <footer>

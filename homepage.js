@@ -9,6 +9,10 @@ var happysel = "";
 var sadsel = "";
 var angrysel = "";
 var city;
+var songname;
+var album;
+var artist;
+
 
 
 function setsong(sel) {
@@ -43,8 +47,18 @@ function setsong(sel) {
         document.getElementById("artist").innerHTML = "B.B.King";
         document.getElementById("album").innerHTML = "Completely Well";
     }
-}
+    songname = document.getElementById("songname").innerHTML;
+    artist = document.getElementById("artist").innerHTML;
+    album = document.getElementById("album").innerHTML;
+    console.log(songname);
+    console.log(artist);
+    console.log(album);
 
+    // message = new Paho.MQTT.Message("Hello");
+    // message.destinationName = "/World";
+    // client.send(message);
+
+}
 
 function playpause() {
     if (!song.paused) {
@@ -64,11 +78,11 @@ function getweather() {
             console.log(data.main.temp);
             console.log(data.weather[0].main);
             $('#temperature').html(data.main.temp + "&deg");
-            if (data.weather.main == "Clouds")
+            if (data.weather.main[0] == "Clouds")
                 $('#wpic').html('<img  src="Cloud.png" alt="" width="">');
-            if (data.weather.main == "Rain")
+            if (data.weather.main[0] == "Rain")
                 $('#wpic').html('<img  src="Rain.png" alt="" width="">');
-            if (data.weather.main == "Snow")
+            if (data.weather.main[0] == "Snow")
                 $('#wpic').html('<img  src="Snow.png" alt="" width="">');
             if (data.weather[0].main == "Clear")
                 $('#wpic').html('<img  src="Sun.png" alt="" width="">');
@@ -121,6 +135,48 @@ $(document).ready(function() {
             console.log("mqtt connected");
             // Connection succeeded; subscribe to our topic, you can add multiple lines of these
             client.subscribe('/happysel', { qos: 0 });
+
+
+        },
+        onFailure: function(data) {
+            console.log("Connection failed: " + data.errorMessage);
+        }
+    };
+
+
+    client.connect(options);
+
+
+});
+
+$(document).ready(function() { //Send GET request every 10 seconds to check for mood and update UI accordingly
+
+
+    var wsbroker = "broker.mqttdashboard.com"; //mqtt websocket enabled broker
+    var wsport = 8000 // port for above
+    var client = new Paho.MQTT.Client(wsbroker, wsport,
+        "myclientid_" + parseInt(Math.random() * 100, 10));
+    client.onConnectionLost = function(responseObject) {
+        console.log("connection lost: " + responseObject.errorMessage);
+    };
+    client.onMessageArrived = function(data) {
+        //console.log(message.destinationName, ' -- ', message.payloadString);
+        playpause();
+        var songdetails = {
+            artist: artist,
+            title: songname
+        }
+        message = new Paho.MQTT.Message(JSON.stringify(songdetails));
+        message.destinationName = "moodio/music/info";
+        client.send(message);
+    };
+
+    var options = {
+        timeout: 3,
+        onSuccess: function() {
+            console.log("mqtt connected");
+            // Connection succeeded; subscribe to our topic, you can add multiple lines of these
+            client.subscribe('moodio/music/control', { qos: 0 });
 
 
         },
@@ -217,27 +273,24 @@ $(document).ready(function() { //Send GET request every 10 seconds to check for 
         //console.log(message.destinationName, ' -- ', message.payloadString);
         console.log(data.payloadString); //logs the mood
         //reflects the happy emoji if the mood is happy
+
         if (data.payloadString == "happy") {
             mood = "happy";
             document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--yay"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__mouth"></div></div></div>';
             setsong(happysel);
-            playpause();
+
         }
         //reflects the sad emoji if the mood is sad
         else if (data.payloadString == "sad") {
             mood = "sad";
             document.getElementsByClassName('circlesmall')[0].innerHTML = ' <div class="emoji  emoji--sad"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div>';
             setsong(sadsel);
-            playpause();
         }
         //reflects the angry emoji if the mood is angry 
         else if (data.payloadString == "angry") {
             mood = "angry";
             document.getElementsByClassName('circlesmall')[0].innerHTML = '<div class="emoji  emoji--angry"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div>';
             setsong(angrysel);
-            playpause();
-        } else {
-            alert("User error");
         }
     };
 
