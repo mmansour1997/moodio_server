@@ -103,96 +103,107 @@ client.on('connect', function() {
     }, 1000 * 3)
 
 })
+
+// onMessageReceived
 client.on('message', function(topic, message) {
 
     if (topic == "moodio/login") {
         var nano = require('nano')('http://localhost:5984');
         var test_db = nano.db.use('accounts');
-        var string = JSON.parse(message);
-        //console.log(message);
-        username = string.username;
-        deviceId = string.devid;
 
-        console.log("Username: " + string.username);
-        console.log("Password: " + string.password);
-        console.log("Device ID: " + string.devid);
+        if (message.toString().charAt(0) == "{") { // if received JSON object (login creds)
 
-        const q = {
-            selector: {
-                user: { "$eq": string.username }, //similar logic as before
-                //timestamp: { "$lt": parseInt(req.body.end_time) }
-            },
-            fields: ["_id",
-                "user",
-                "password",
-                "firstname",
-                "lastname",
-                "email",
-                "happysel",
-                "sadsel",
-                "angrysel",
-                "devid"
-            ],
-            limit: 1
-        };
+            var string = JSON.parse(message);
+            //console.log(message);
+            username = string.username;
+            deviceId = string.devid;
 
-        test_db.find(q).then((doc) => {
-            flag = "true";
+            console.log("Username: " + string.username);
+            console.log("Password: " + string.password);
+            console.log("Device ID: " + string.devid);
+
+            const q = {
+                selector: {
+                    user: { "$eq": string.username }, //similar logic as before
+                    //timestamp: { "$lt": parseInt(req.body.end_time) }
+                },
+                fields: ["_id",
+                    "user",
+                    "password",
+                    "firstname",
+                    "lastname",
+                    "email",
+                    "happysel",
+                    "sadsel",
+                    "angrysel",
+                    "devid"
+                ],
+                limit: 1
+            };
+
+            test_db.find(q).then((doc) => {
+                flag = "true";
 
 
-            if (doc.docs.length > 0) {
-                console.log(doc);
-                doc.docs.forEach((row) => {
-                    password = row.password;
-                    console.log(row);
-                    if (string.password === row.password) {
-                        client.publish('moodio/login', 'true');
-                        //console.log("oleeeeeeeeeeeeeeeeeeeee");
-                        // check if user watch device ID is registered
-                        if (row.devid == "null") {
-                            //update the user account with retrieved device ID
-                            test_db.update =
-                                function(obj, key, callback) {
-                                    var db = this;
-                                    db.get(key, function(error, existing) {
-                                        if (!error) {
-                                            obj._rev = existing._rev;
-                                            db.insert(obj, key, callback);
-                                        } else {
-                                            db.insert(obj, callback);
-                                        }
-                                    });
-                                }
+                if (doc.docs.length > 0) {
+                    console.log(doc);
+                    doc.docs.forEach((row) => {
+                        password = row.password;
+                        console.log(row);
+                        if (string.password === row.password) {
+                            client.publish('moodio/login', 'true');
+                            //console.log("oleeeeeeeeeeeeeeeeeeeee");
+                            // check if user watch device ID is registered
+                            if (row.devid == "null") { // if user does not have any registered watch
+                                //update the user account with retrieved device ID
+                                test_db.update =
+                                    function(obj, key, callback) {
+                                        var db = this;
+                                        db.get(key, function(error, existing) {
+                                            if (!error) {
+                                                obj._rev = existing._rev;
+                                                db.insert(obj, key, callback);
+                                            } else {
+                                                db.insert(obj, callback);
+                                            }
+                                        });
+                                    }
 
-                            var newUserData = { //updated user data with device ID
-                                "user": row.user,
-                                "password": row.password,
-                                "firstname": row.firstname,
-                                "lastname": row.lastname,
-                                "email": row.email,
-                                "happysel": row.happysel,
-                                "sadsel": row.sadsel,
-                                "angrysel": row.angrysel,
-                                "devid": deviceId // update device ID of user JSON doc
-                            };
+                                var newUserData = { //updated user data with device ID
+                                    "user": row.user,
+                                    "password": row.password,
+                                    "firstname": row.firstname,
+                                    "lastname": row.lastname,
+                                    "email": row.email,
+                                    "happysel": row.happysel,
+                                    "sadsel": row.sadsel,
+                                    "angrysel": row.angrysel,
+                                    "devid": deviceId // update device ID of user JSON doc
+                                };
 
-                            test_db.update(newUserData, row._id, function(err) {
-                                if (!err) {
+                                test_db.update(newUserData, row._id, function(err) {
+                                    if (!err) {
 
-                                } else console.log(err);
-                            })
+                                    } else console.log(err);
+                                })
+
+                                client.publish('moodio/login', 'registered'); // notify user that new watch has been registered to his/her account
+
+                            } // else, do nothing
+
+                        } else {
+                            client.publish('moodio/login', 'false');
                         }
 
-                    } else {
-                        client.publish('moodio/login', 'false');
-                    }
+                        if (flag == "false") {
+                            client.publish('moodio/login', 'false');
+                        }
+                    });
+                }
+            })
 
-                    if (flag == "false") {
-                        client.publish('moodio/login', 'false');
-                    }
-                });
-            }
-        })
+        }
+
     } else if (topic == "moodio/mood") {
 
         var messageString = message.toString();
