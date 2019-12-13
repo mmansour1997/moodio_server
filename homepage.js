@@ -316,11 +316,12 @@ $(document).ready(function() { //Subscribe to lightreading topic and update UI a
     };
     client.onMessageArrived = function(data) {
         console.log(data.destinationName, ' -- ', data.payloadString);
-        //console.log(data.toString());
+        console.log(data.toString());
         //divide by the highest light value in the room, multiply by rgb factor 255
-        var light = (parseInt(data.payloadString) / 500) * 255
-            //console.log(light.toString());
-            //set the slider value 
+        var light = (parseInt(data.payloadString));
+        $("#yellow").slider("value", light);
+        //console.log(light.toString());
+        //set the slider value 
         if (mood == "sad" && (light < 20 || $("#yellow").slider("value") < 20)) { //if mood is sad and light is less than 20 raise the light to 60%
             $("#yellow").slider("value", (60 / 100) * 255);
         }
@@ -334,7 +335,7 @@ $(document).ready(function() { //Subscribe to lightreading topic and update UI a
         onSuccess: function() {
             console.log("mqtt connected");
             // Connection succeeded; subscribe to our topic, you can add multiple lines of these
-            client.subscribe('/lightreading', { qos: 0 });
+            client.subscribe('moodio/actuators/lamp', { qos: 0 });
 
 
         },

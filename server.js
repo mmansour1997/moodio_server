@@ -72,7 +72,7 @@ nano.db.create('moods').then((data) => { //create mood db
 var broker = "mqtt://broker.hivemq.com";
 var mqtt = require('mqtt')
 var client = mqtt.connect(broker);
-client.on('connect', function () {
+client.on('connect', function() {
 
     // subscribe to all topics
     client.subscribe('moodio/login', function(err) {
@@ -240,11 +240,11 @@ client.on('message', function(topic, message) {
 var lightLevel = 0;
 var lightReading = 0;
 var hrmReading = 0;
-var watchMoodDone = false;  // flag to check whether server completed mood calculation from watch HRM sensors
-var camMoodDone = false;    // flag to check whether server received mood calculation from camera
-var watchMood = "";         // stores mood calculated from watch HRM sensor
-var cameraMood = "";        // stores mood calculated from camera
-var mood = "happy";         // stores overall mood after combining watch and camera moods; default mood is happy
+var watchMoodDone = false; // flag to check whether server completed mood calculation from watch HRM sensors
+var camMoodDone = false; // flag to check whether server received mood calculation from camera
+var watchMood = ""; // stores mood calculated from watch HRM sensor
+var cameraMood = ""; // stores mood calculated from camera
+var mood = "happy"; // stores overall mood after combining watch and camera moods; default mood is happy
 
 var rrReadings = []; // create buffer of 150 RR-interval readings received from the watch
 
@@ -304,13 +304,13 @@ function calculateLight() {
     // lightLevel for lamp is between 0 and 255 
 
     console.log("Calculating light level...");
-    if ((mood == "happy") && (lightReading > 330 || lightReading < 170)) {
+    if ((mood == "happy")) {
         // lightlevel will be random number between 85 and 170 (happy lamp light level range)
         lightLevel = randomIntFromInterval(85, 170);
-    } else if ((mood == "sad") && (lightReading <= 330)) {
+    } else if ((mood == "sad")) {
         // lightlevel will be random number between 170 and 255 (sad lamp light level range)
         lightLevel = randomIntFromInterval(170, 255);
-    } else if ((mood == "angry") && (lightReading >= 170)) {
+    } else if ((mood == "angry")) {
         // lightlevel will be random number between 0 and 85 (angry lamp light level range)
         lightLevel = randomIntFromInterval(0, 85);
     }
